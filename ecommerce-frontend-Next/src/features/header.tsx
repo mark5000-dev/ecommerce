@@ -1,11 +1,28 @@
-import React from "react";
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { ShoppingBag, Search, User, Menu, Heart } from "lucide-react";
 
-export const Header: React.FC = () => {
-  // Static filler numbers for layout mapping
-  const wishlistCountFiller = 3;
-  const cartCountFiller = 2;
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
+import { Cart } from "./cartslider";
+
+// TODO: Link these to your updated state management layout 
+// (e.g., Zustand store or React Query counts)
+const useHeaderCounters = () => {
+  return {
+    cartItemsCount: 3, // Mock value for compilation
+    wishlistItemsCount: 1, // Mock value for compilation
+  };
+};
+
+export const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { cartItemsCount, wishlistItemsCount } = useHeaderCounters();
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
@@ -14,94 +31,132 @@ export const Header: React.FC = () => {
           
           {/* Logo */}
           <Link href="/">
-            <h1 className="font-serif text-[2rem] tracking-tight">
-              <span className="text-foreground">LUX</span>
-              <span className="text-[#D4AF37]">É</span>
-            </h1>
+            <div className="flex-shrink-0 cursor-pointer">
+              <h1 className="font-serif text-[2rem] tracking-tight">
+                <span className="text-foreground">LUX</span>
+                <span className="text-[#D4AF37]">É</span>
+              </h1>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/products" className="text-foreground hover:text-[#D4AF37] transition-colors">
+            <Link href="/products" className="text-foreground hover:text-[#D4AF37] transition-colors font-medium text-sm tracking-wide uppercase">
               New Arrivals
             </Link>
-            <Link href="/category/womens-collection" className="text-foreground hover:text-[#D4AF37] transition-colors">
+            
+            <Link href="/categories/womens-collection" className="text-foreground hover:text-[#D4AF37] transition-colors font-medium text-sm tracking-wide uppercase">
               Women
             </Link>
-            <Link href="/category/mens-collection" className="text-foreground hover:text-[#D4AF37] transition-colors">
+            <Link href="/categories/mens-collection" className="text-foreground hover:text-[#D4AF37] transition-colors font-medium text-sm tracking-wide uppercase">
               Men
             </Link>
-            <Link href="/category/kids-collection" className="text-foreground hover:text-[#D4AF37] transition-colors">
+            <Link href="/categories/kids-collection" className="text-foreground hover:text-[#D4AF37] transition-colors font-medium text-sm tracking-wide uppercase">
               Kids
             </Link>
-            <Link href="/categories" className="text-foreground hover:text-[#D4AF37] transition-colors">
+            <Link href="/categories" className="text-foreground hover:text-[#D4AF37] transition-colors font-medium text-sm tracking-wide uppercase">
               Collections
             </Link>
-            <Link href="/about" className="text-foreground hover:text-[#D4AF37] transition-colors">
+            <Link href="/products" className="text-foreground hover:text-[#D4AF37] transition-colors font-medium text-sm tracking-wide uppercase">
+              Products
+            </Link>
+            
+            <Link href="/about" className="text-foreground hover:text-[#D4AF37] transition-colors font-medium text-sm tracking-wide uppercase">
               About
             </Link>
           </nav>
 
-          {/* Actions Workspace */}
+          {/* Actions */}
           <div className="flex items-center gap-2">
-            
-            {/* Search Trigger */}
-            <button
-              type="button"
-              aria-label="Search items"
-              className="hidden sm:inline-flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
+            <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
               <Search className="h-5 w-5" />
-            </button>
-
-            {/* Profile Route */}
-            <Link
-              href="/profile"
-              aria-label="View account profile"
-              className="hidden sm:inline-flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <User className="h-5 w-5" />
-            </Link>
-
-            {/* Wishlist Link + Badge Filler */}
-            <Link
-              href="/wishlist"
-              aria-label="View wishlist"
-              className="relative flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <Heart className="h-5 w-5" />
-              {wishlistCountFiller > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#D4AF37] text-black h-5 w-5 flex items-center justify-center text-xs font-semibold rounded-full">
-                  {wishlistCountFiller}
-                </span>
-              )}
-            </Link>
+            </Button>
             
-            {/* Shopping Bag Trigger + Badge Filler */}
-            <button
-              type="button"
-              aria-label="Open shopping cart"
-              className="relative flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            <Button variant="ghost" size="icon" className="hidden sm:inline-flex" asChild>
+              <Link href="/profile">
+                <User className="h-5 w-5" />
+              </Link>
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative"
+              asChild
+            >
+              <Link href="/wishlist">
+                <Heart className="h-5 w-5" />
+                {wishlistItemsCount > 0 && (
+                  <Badge className="absolute -top-1 -right-1 bg-[#D4AF37] text-black hover:bg-[#C5A028] h-5 w-5 flex items-center justify-center p-0 text-xs rounded-full">
+                    {wishlistItemsCount}
+                  </Badge>
+                )}
+              </Link>
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative"
+              onClick={() => setIsCartOpen(true)}
             >
               <ShoppingBag className="h-5 w-5" />
-              {cartCountFiller > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#D4AF37] text-black h-5 w-5 flex items-center justify-center text-xs font-semibold rounded-full">
-                  {cartCountFiller}
-                </span>
+              {cartItemsCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 bg-[#D4AF37] text-black hover:bg-[#C5A028] h-5 w-5 flex items-center justify-center p-0 text-xs rounded-full">
+                  {cartItemsCount}
+                </Badge>
               )}
-            </button>
+            </Button>
 
-            {/* Mobile Menu Trigger Placeholder */}
-            <button
-              type="button"
-              aria-label="Toggle menu"
-              className="inline-flex md:hidden items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
+            {/* Mobile Menu Sheet */}
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <SheetTrigger asChild className="md:hidden">
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="bg-[#fffaf0] w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="font-serif text-[1.5rem] text-left">
+                    <span className="text-foreground">LUX</span>
+                    <span className="text-[#D4AF37]">É</span>
+                  </SheetTitle>
+                </SheetHeader>
+                <Separator className="my-4" />
+                <nav className="flex flex-col gap-4">
+                  <Link href="/products" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-[#D4AF37] transition-colors py-2 font-medium">
+                    New Arrivals
+                  </Link>
+                  <Link href="/categories/womens-collection" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-[#D4AF37] transition-colors py-2 font-medium">
+                    Women
+                  </Link>
+                  <Link href="/categories/mens-collection" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-[#D4AF37] transition-colors py-2 font-medium">
+                    Men
+                  </Link>
+                  <Link href="/categories" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-[#D4AF37] transition-colors py-2 font-medium">
+                    Collections
+                  </Link>
+                  <Link href="/about" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-[#D4AF37] transition-colors py-2 font-medium">
+                    About
+                  </Link>
+                  <Separator className="my-2" />
+                  <Link href="/wishlist" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-[#D4AF37] transition-colors py-2 flex items-center gap-2 font-medium">
+                    <Heart className="h-4 w-4" />
+                    Wishlist {wishlistItemsCount > 0 && `(${wishlistItemsCount})`}
+                  </Link>
+                  <Link href="/cart" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-[#D4AF37] transition-colors py-2 flex items-center gap-2 font-medium">
+                    <ShoppingBag className="h-4 w-4" />
+                    Cart {cartItemsCount > 0 && `(${cartItemsCount})`}
+                  </Link>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
+      
+      {/* Cart Drawer */}
+      <Cart open={isCartOpen} onOpenChange={setIsCartOpen} />
     </header>
   );
 };

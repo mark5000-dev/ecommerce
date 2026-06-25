@@ -2,6 +2,13 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Check, Heart, ShoppingBag, Eye } from "lucide-react";
+import { Newsletter } from "@/features/newsletter";
+import { ImageWithFallback } from "@/components/ui/imageWithFallback";
+import { ProductCard } from "@/features/productCard";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+
+
 
 // --- DUMMY DATA STRUCTURES ---
 const categories = [
@@ -59,11 +66,42 @@ const showcaseProducts = [
   }
 ];
 
+// --- id based navbar
+const SectionSubNav: React.FC = () => {
+  const links = [
+    { label: "Overview", id: "#hero" },
+    { label: "The Lookbook", id: "#products" },
+    { label: "Our Heritage", id: "#about" },
+    { label: "Categories", id: "#categories" },
+    { label: "Contact us", id: "#newsletter" }
+  ];
+
+  return (
+    <div className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md">
+      <div className="container mx-auto px-4 lg:px-8">
+        <nav className="flex h-12 items-center justify-center gap-6 sm:gap-10 text-[11px] sm:text-xs uppercase tracking-widest font-medium">
+          {links.map((link) => (
+            <a
+              key={link.label}
+              href={link.id}
+              className="text-muted-foreground hover:text-[#D4AF37] transition-colors duration-200 relative py-3 group"
+            >
+              {link.label}
+              {/* Premium minimal underline animation on hover */}
+              <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#D4AF37] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            </a>
+          ))}
+        </nav>
+      </div>
+    </div>
+  );
+};
+
 // --- FEATURE SECTIONS ---
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative h-[90vh] min-h-[600px] overflow-hidden">
+    <section id="hero" className="relative h-[70vh] min-h-[500px] overflow-hidden">
       {/* Background Image Panel */}
       <div className="absolute inset-0">
         <img
@@ -121,75 +159,10 @@ const Hero: React.FC = () => {
   );
 };
 
-const FeaturedCollection: React.FC = () => {
-  return (
-    <section className="py-20 bg-card">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-          
-          {/* Showcase Display Image */}
-          <div className="order-2 md:order-1">
-            <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1759323321196-2813db509285?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-                alt="Featured Luxury Line"
-                className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
-              />
-              <span className="absolute top-6 left-6 bg-[#D4AF37] text-black font-semibold text-xs tracking-wider uppercase px-5 py-2.5 rounded-sm shadow-md">
-                New Arrivals
-              </span>
-            </div>
-          </div>
-
-          {/* Copy Deck / Specs */}
-          <div className="order-1 md:order-2">
-            <div className="max-w-lg">
-              <div className="w-16 h-1 bg-[#D4AF37] mb-6" />
-              <h2 className="font-serif text-[2.5rem] md:text-[3.5rem] leading-tight mb-6 text-foreground">
-                Crafted for the Discerning
-              </h2>
-              <p className="text-muted-foreground mb-8 text-lg font-light leading-relaxed">
-                Every piece in our collection is meticulously selected to embody luxury, 
-                quality, and timeless style. From the finest fabrics to impeccable craftsmanship, 
-                we bring you fashion that makes a statement.
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                {[
-                  { title: "Premium Materials", desc: "Sourced from the world's finest manufacturers" },
-                  { title: "Expert Craftsmanship", desc: "Each piece made with attention to detail" },
-                  { title: "Timeless Design", desc: "Styles that transcend seasonal trends" }
-                ].map((item, i) => (
-                  <div className="flex items-start gap-4" key={i}>
-                    <span className="flex items-center justify-center rounded-full w-6 h-6 border border-[#D4AF37] shrink-0 mt-0.5">
-                      <Check className="w-3 h-3 text-[#D4AF37]" />
-                    </span>
-                    <div>
-                      <p className="font-medium text-foreground">{item.title}</p>
-                      <p className="text-sm text-muted-foreground">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <Link
-                href="/collections/curated"
-                className="inline-flex items-center justify-center bg-foreground text-background hover:bg-foreground/90 transition-colors font-medium rounded-md px-8 h-12"
-              >
-                Discover More
-              </Link>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const CategoryShowcase: React.FC = () => {
   return (
-    <section className="py-20 bg-background">
+    <section id="categories" className="py-20 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
         
         {/* Module Title Deck */}
@@ -238,10 +211,51 @@ const CategoryShowcase: React.FC = () => {
 };
 
 const ProductGrid: React.FC = () => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+
+  // Monitor scroll positioning to dynamically reveal or hide control buttons
+  const updateScrollButtons = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      
+      // Show left button only after scrolling right (buffer of 10px)
+      setShowLeftArrow(scrollLeft > 10);
+      
+      // Hide right button if we've reached the end of the container track
+      setShowRightArrow(scrollLeft + clientWidth < scrollWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener("scroll", updateScrollButtons);
+      // Run an initial evaluation frame
+      updateScrollButtons();
+    }
+    return () => container?.removeEventListener("scroll", updateScrollButtons);
+  }, []);
+
+  const handleScroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const { clientWidth } = scrollContainerRef.current;
+      // Scroll by 80% of the visible container frame width for context continuation
+      const scrollAmount = clientWidth * 0.8; 
+
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <section className="py-20 bg-card">
+    <section id="products" className="py-20 bg-card">
       <div className="container mx-auto px-4 lg:px-8">
         
+        {/* Header Segment */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
           <div>
             <h2 className="font-serif text-[2.5rem] md:text-[3.5rem] text-foreground mb-2">
@@ -260,106 +274,146 @@ const ProductGrid: React.FC = () => {
           </Link>
         </div>
 
-        {/* Dynamic Static Product Blocks */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {showcaseProducts.map((product) => (
-            <div className="group flex flex-col h-full" key={product.id}>
-              {/* Card Thumbnail Box */}
-              <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-muted mb-4 shadow-sm">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                />
-                
-                {/* Floating Utility Overlay Frame */}
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                  <button 
-                    type="button"
-                    aria-label="Add to Wishlist"
-                    className="h-10 w-10 rounded-full bg-background flex items-center justify-center text-foreground hover:text-red-500 hover:scale-110 transition-all shadow-md"
-                  >
-                    <Heart className="w-5 h-5" />
-                  </button>
-                  <button 
-                    type="button"
-                    aria-label="Quick view"
-                    className="h-10 w-10 rounded-full bg-background flex items-center justify-center text-foreground hover:text-[#D4AF37] hover:scale-110 transition-all shadow-md"
-                  >
-                    <Eye className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Descriptions Footer Block */}
-              <div className="flex justify-between items-start">
-                <div>
-                  <span className="text-xs text-muted-foreground uppercase tracking-wider mb-1 block">
-                    {product.category}
-                  </span>
-                  <h3 className="font-medium text-foreground group-hover:text-[#D4AF37] transition-colors line-clamp-1">
-                    {product.name}
-                  </h3>
-                </div>
-                <p className="font-serif text-foreground font-medium shrink-0 ml-4">
-                  {product.price}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
-const Newsletter: React.FC = () => {
-  return (
-    <section className="py-24 bg-background border-t border-border">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-serif text-[2.5rem] md:text-[3.5rem] text-foreground mb-4">
-            Join the Club
-          </h2>
-          <p className="text-muted-foreground text-lg mb-8 font-light max-w-xl mx-auto">
-            Subscribe to receive exclusive early access to new collections, lookbooks, and insider updates.
-          </p>
+        {/* Carousel Slider Workspace Area */}
+        <div className="relative group">
           
-          {/* Custom Interactive Pure Styling Box */}
-          <form 
-            onSubmit={(e) => e.preventDefault()} 
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-          >
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              required
-              className="flex-1 px-4 h-12 rounded-md border border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] transition-shadow text-sm"
-            />
+          {/* Left Arrow Controller Button */}
+          {showLeftArrow && (
             <button
-              type="submit"
-              className="h-12 px-6 bg-[#D4AF37] text-black hover:bg-[#C5A028] font-medium rounded-md tracking-wide transition-colors shrink-0 text-sm"
+              type="button"
+              onClick={() => handleScroll("left")}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-background/90 hover:bg-background border border-border text-foreground p-3 rounded-full shadow-lg transition-all -translate-x-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100"
+              aria-label="Scroll left"
             >
-              Subscribe
+              <ChevronLeft className="w-5 h-5" />
             </button>
-          </form>
+          )}
+
+          {/* Right Arrow Controller Button */}
+          {showRightArrow && (
+            <button
+              type="button"
+              onClick={() => handleScroll("right")}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-background/90 hover:bg-background border border-border text-foreground p-3 rounded-full shadow-lg transition-all translate-x-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          )}
+
+          {/* Horizontal Scrolling Component Row Container */}
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-8 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory"
+            style={{ 
+              scrollbarWidth: "none",     /* Hides Firefox scrollbar */
+              msOverflowStyle: "none",    /* Hides IE/Edge scrollbar */
+            }}
+          >
+            {/* Direct Webkit dynamic scrollbar styling bypass injection */}
+            <style jsx global>{`
+              div::-webkit-scrollbar {
+                display: none;            /* Hides Chrome/Safari/Webkit scrollbars */
+              }
+            `}</style>
+
+            {showcaseProducts.map((product) => (
+              <div 
+                key={product.id} 
+                className="w-[280px] sm:w-[320px] shrink-0 snap-start"
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+
+// -- About us
+export const AboutSection = () => {
+  return (
+    <section id="about" className="py-20 bg-card border-b border-border">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+          
+          {/* Showcase Display Image */}
+          <div className="order-2 md:order-1">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-xl group">
+              <ImageWithFallback
+                src="https://images.unsplash.com/photo-1759323321196-2813db509285?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                alt="The Craftsmanship of LUXÉ"
+                className="w-full h-full transform group-hover:scale-105 transition-transform duration-700"
+              />
+              <span className="absolute top-6 left-6 bg-[#D4AF37] text-black font-semibold text-xs tracking-wider uppercase px-5 py-2.5 rounded-sm shadow-md z-10">
+                Our Heritage
+              </span>
+            </div>
+          </div>
+
+          {/* Copy Deck / Brand Manifesto */}
+          <div className="order-1 md:order-2">
+            <div className="max-w-lg">
+              <div className="w-16 h-1 bg-[#D4AF37] mb-6" />
+              <h2 className="font-serif text-[2.5rem] md:text-[3.5rem] leading-tight mb-6 text-foreground">
+                The Essence of LUXÉ
+              </h2>
+              <p className="text-muted-foreground mb-8 text-lg font-light leading-relaxed">
+                Founded on the principles of timeless elegance and uncompromised craftsmanship, 
+                LUXÉ bridges the gap between classical tailoring and modern sophistication. 
+                We believe exceptional garments shouldn't just turn heads—they should tell a story.
+              </p>
+              
+              <div className="space-y-4 mb-8">
+                {[
+                  { title: "Sartorial Excellence", desc: "Partnering with multi-generational European ateliers." },
+                  { title: "Conscious Luxury", desc: "Committed to circular fashion and strictly ethical sourcing." },
+                  { title: "Tailored to You", desc: "An unwavering focus on silhouette, fit, and daily comfort." }
+                ].map((item, i) => (
+                  <div className="flex items-start gap-4" key={i}>
+                    <span className="flex items-center justify-center rounded-full w-6 h-6 border border-[#D4AF37] shrink-0 mt-0.5">
+                      <Check className="w-3 h-3 text-[#D4AF37]" />
+                    </span>
+                    <div>
+                      <p className="font-medium text-foreground">{item.title}</p>
+                      <p className="text-sm text-muted-foreground">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <Link
+                href="/about"
+                className="inline-flex items-center justify-center bg-foreground text-background hover:bg-foreground/90 transition-colors font-medium rounded-md px-8 h-12 shadow-sm"
+              >
+                Discover More
+              </Link>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
   );
 };
+
+
 
 // --- CORE LAYOUT ROUTE EXPORT ---
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <main>
+        <SectionSubNav />
         <Hero />
-        <FeaturedCollection />
-        <CategoryShowcase />
         <ProductGrid />
-        <Newsletter />
+        <AboutSection />
+        <CategoryShowcase />
+        <div id="newsletter"><Newsletter /></div>
       </main>
     </div>
   );

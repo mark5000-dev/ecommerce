@@ -1,0 +1,1018 @@
+[
+  {
+    "id": 1,
+    "name": "Cashmere Wrap Coat",
+    "price": 2899,
+    "image": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800",
+    "mainCategory": "womens",
+    "subCategories": ["outerwear", "coats"],
+    "description": "Luxurious 100% cashmere wrap coat with belted waist. Timelessly elegant and supremely soft.",
+    "isNew": true,
+    "isBestseller": true,
+    "rating": 4.9,
+    "reviews": 156,
+    "colors": ["Camel", "Black", "Navy"],
+    "images": [
+      "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800",
+      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800",
+      "https://images.unsplash.com/photo-1600102755502-8a4776dfdbd9?w=800",
+      "https://images.unsplash.com/photo-1621189486647-cb6cf49e2b8b?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Sarah M.", "rating": 5, "date": "2 days ago", "comment": "Exceptional quality and craftsmanship." },
+      { "id": 2, "author": "James R.", "rating": 5, "date": "1 week ago", "comment": "Luxury through and through." },
+      { "id": 3, "author": "Olivia P.", "rating": 5, "date": "3 days ago", "comment": "Soft, warm, and elegant. Worth every penny." },
+      { "id": 4, "author": "Hannah T.", "rating": 4, "date": "2 weeks ago", "comment": "Fit is perfect but a little pricey." }
+    ],
+    "inStock": true,
+    "stock": 12,
+    "isFeatured": true
+  },
+  {
+    "id": 2,
+    "name": "Silk Evening Gown",
+    "price": 3499,
+    "image": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800",
+    "mainCategory": "womens",
+    "subCategories": ["dresses", "evening"],
+    "description": "Floor-length silk charmeuse gown with delicate draping and adjustable straps.",
+    "isNew": true,
+    "isBestseller": false,
+    "rating": 5.0,
+    "reviews": 89,
+    "colors": ["Champagne", "Emerald", "Ruby"],
+    "images": [
+      "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800",
+      "https://images.unsplash.com/photo-1614226417344-4c0932e25e2a?w=800",
+      "https://images.unsplash.com/photo-1623198778577-263b3c9a1c45?w=800",
+      "https://images.unsplash.com/photo-1606091626920-98d1e6c4653e?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Naomi L.", "rating": 5, "date": "1 day ago", "comment": "Absolutely stunning. Fit and fabric are perfect." },
+      { "id": 2, "author": "Greta N.", "rating": 5, "date": "4 days ago", "comment": "Elegant and comfortable. I felt like a star." },
+      { "id": 3, "author": "Jessica F.", "rating": 4, "date": "2 weeks ago", "comment": "Beautiful gown, but the hem was slightly long." },
+      { "id": 4, "author": "Eva M.", "rating": 5, "date": "3 weeks ago", "comment": "Exceeded my expectations in quality and style." }
+    ],
+    "inStock": true,
+    "stock": 8,
+    "isFeatured": true
+  },
+  {
+    "id": 3,
+    "name": "Tailored Blazer",
+    "price": 1299,
+    "image": "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=800",
+    "mainCategory": "womens",
+    "subCategories": ["blazers", "workwear"],
+    "description": "Impeccably tailored wool blazer with peak lapels and structured shoulders.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.8,
+    "reviews": 234,
+    "colors": ["Black", "Ivory", "Charcoal"],
+    "images": [
+      "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=800",
+      "https://images.unsplash.com/photo-1600372147337-6e7b6e9b22f7?w=800",
+      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800",
+      "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Lina K.", "rating": 5, "date": "3 days ago", "comment": "Sharp, fits perfectly. Ideal for work." },
+      { "id": 2, "author": "Marissa G.", "rating": 5, "date": "1 week ago", "comment": "High-quality wool and stitching is flawless." },
+      { "id": 3, "author": "Janelle P.", "rating": 4, "date": "2 weeks ago", "comment": "Slightly heavy, but excellent for winter." },
+      { "id": 4, "author": "Olivia T.", "rating": 5, "date": "1 month ago", "comment": "Love the classic design. Will buy again." }
+    ],
+    "inStock": true,
+    "stock": 24,
+    "isFeatured": false
+  },
+  {
+    "id": 4,
+    "name": "Pleated Midi Skirt",
+    "price": 799,
+    "image": "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800",
+    "mainCategory": "womens",
+    "subCategories": ["skirts", "workwear"],
+    "description": "Elegant pleated midi skirt in premium Italian wool blend.",
+    "isNew": false,
+    "isBestseller": false,
+    "rating": 4.6,
+    "reviews": 112,
+    "colors": ["Navy", "Black", "Burgundy"],
+    "images": [
+      "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800",
+      "https://images.unsplash.com/photo-1609876543210-abcdef123456?w=800",
+      "https://images.unsplash.com/photo-1612123456789-qwerty98765?w=800",
+      "https://images.unsplash.com/photo-1621987654321-zxcvbn98765?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Tina S.", "rating": 5, "date": "2 days ago", "comment": "Beautiful pleats, high-quality material." },
+      { "id": 2, "author": "Sophie M.", "rating": 4, "date": "1 week ago", "comment": "Fit is slightly tight around the waist, but lovely overall." },
+      { "id": 3, "author": "Clara D.", "rating": 5, "date": "3 days ago", "comment": "Pairing it with blouses is effortless. Very versatile." },
+      { "id": 4, "author": "Hannah F.", "rating": 4, "date": "2 weeks ago", "comment": "Color is gorgeous. Length perfect for work." }
+    ],
+    "inStock": true,
+    "stock": 18,
+    "isFeatured": false
+  },
+  {
+    "id": 5,
+    "name": "Leather Trench Coat",
+    "price": 4299,
+    "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800",
+    "mainCategory": "womens",
+    "subCategories": ["outerwear", "leather"],
+    "description": "Butter-soft lambskin leather trench coat with classic double-breasted silhouette.",
+    "isNew": true,
+    "isBestseller": true,
+    "rating": 5.0,
+    "reviews": 67,
+    "colors": ["Black", "Cognac"],
+    "images": [
+      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800",
+      "https://images.unsplash.com/photo-1615123456789-leathertrench1?w=800",
+      "https://images.unsplash.com/photo-1625123456789-leathertrench2?w=800",
+      "https://images.unsplash.com/photo-1635123456789-leathertrench3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Isabelle C.", "rating": 5, "date": "1 day ago", "comment": "Top-quality leather, feels amazing." },
+      { "id": 2, "author": "Megan R.", "rating": 5, "date": "1 week ago", "comment": "Perfect for fall and winter. Elegant." },
+      { "id": 3, "author": "Clara H.", "rating": 5, "date": "3 days ago", "comment": "Classic trench design, highly recommended." },
+      { "id": 4, "author": "Elena B.", "rating": 4, "date": "2 weeks ago", "comment": "Beautiful coat, but expensive." }
+    ],
+    "inStock": true,
+    "stock": 6,
+    "isFeatured": true
+  },
+  {
+    "id": 6,
+    "name": "Merino Wool Sweater",
+    "price": 599,
+    "image": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800",
+    "mainCategory": "womens",
+    "subCategories": ["knitwear", "sweaters"],
+    "description": "Luxuriously soft merino wool crewneck sweater with ribbed trim.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.7,
+    "reviews": 189,
+    "colors": ["Cream", "Charcoal", "Dusty Rose"],
+    "images": [
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800",
+      "https://images.unsplash.com/photo-1601234567890-merinosweater1?w=800",
+      "https://images.unsplash.com/photo-1612233445567-merinosweater2?w=800",
+      "https://images.unsplash.com/photo-1623344556678-merinosweater3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Fiona P.", "rating": 5, "date": "3 days ago", "comment": "Soft and cozy. Perfect fit." },
+      { "id": 2, "author": "Laura V.", "rating": 5, "date": "1 week ago", "comment": "Great for layering. Quality material." },
+      { "id": 3, "author": "Nina K.", "rating": 4, "date": "2 weeks ago", "comment": "Slightly thin, but still warm." },
+      { "id": 4, "author": "Sophia T.", "rating": 5, "date": "1 month ago", "comment": "Colors are vibrant and beautiful." }
+    ],
+    "inStock": true,
+    "stock": 32,
+    "isFeatured": false
+  },
+  {
+    "id": 7,
+    "name": "Wide-Leg Trousers",
+    "price": 899,
+    "image": "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=800",
+    "mainCategory": "womens",
+    "subCategories": ["trousers", "workwear"],
+    "description": "High-waisted wide-leg trousers in luxe wool crepe with pressed crease.",
+    "isNew": false,
+    "isBestseller": false,
+    "rating": 4.5,
+    "reviews": 143,
+    "colors": ["Black", "Navy", "Taupe"],
+    "images": [
+      "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=800",
+      "https://images.unsplash.com/photo-1612233445567-widetrouser1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-widetrouser2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-widetrouser3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Maya S.", "rating": 5, "date": "1 day ago", "comment": "Stylish and comfortable. Love the fit." },
+      { "id": 2, "author": "Lydia W.", "rating": 4, "date": "3 days ago", "comment": "Material feels high-quality. Slightly long." },
+      { "id": 3, "author": "Clara B.", "rating": 5, "date": "1 week ago", "comment": "Perfect for office wear." },
+      { "id": 4, "author": "Anna F.", "rating": 4, "date": "2 weeks ago", "comment": "Good fabric, but needs slight tailoring." }
+    ],
+    "inStock": true,
+    "stock": 20,
+    "isFeatured": false
+  },
+  {
+    "id": 8,
+    "name": "Satin Blouse",
+    "price": 649,
+    "image": "https://images.unsplash.com/photo-1618932260643-eee4a2f652a6?w=800",
+    "mainCategory": "womens",
+    "subCategories": ["tops", "blouses"],
+    "description": "Elegant satin blouse with French cuffs and mother-of-pearl buttons.",
+    "isNew": true,
+    "isBestseller": false,
+    "rating": 4.8,
+    "reviews": 98,
+    "colors": ["Ivory", "Black", "Blush"],
+    "images": [
+      "https://images.unsplash.com/photo-1618932260643-eee4a2f652a6?w=800",
+      "https://images.unsplash.com/photo-1612233445567-satinblouse1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-satinblouse2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-satinblouse3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Ella R.", "rating": 5, "date": "2 days ago", "comment": "Smooth and elegant. Perfect for office or evening." },
+      { "id": 2, "author": "Chloe M.", "rating": 4, "date": "1 week ago", "comment": "Nice quality, slightly delicate." },
+      { "id": 3, "author": "Lara P.", "rating": 5, "date": "3 days ago", "comment": "Fits beautifully and drapes well." },
+      { "id": 4, "author": "Samantha H.", "rating": 4, "date": "2 weeks ago", "comment": "Love the color, but needs gentle washing." }
+    ],
+    "inStock": true,
+    "stock": 16,
+    "isFeatured": false
+  },
+  {
+    "id": 9,
+    "name": "Cashmere Overcoat",
+    "price": 3299,
+    "image": "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?w=800",
+    "mainCategory": "mens",
+    "subCategories": ["outerwear", "coats"],
+    "description": "Classic double-breasted overcoat in pure cashmere with notch lapels.",
+    "isNew": true,
+    "isBestseller": true,
+    "rating": 4.9,
+    "reviews": 178,
+    "colors": ["Charcoal", "Navy", "Camel"],
+    "images": [
+      "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?w=800",
+      "https://images.unsplash.com/photo-1612233445567-cashmereovercoat1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-cashmereovercoat2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-cashmereovercoat3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Daniel K.", "rating": 5, "date": "1 day ago", "comment": "Luxurious feel, perfect for winter." },
+      { "id": 2, "author": "James R.", "rating": 5, "date": "4 days ago", "comment": "Fits perfectly, looks amazing." },
+      { "id": 3, "author": "Michael S.", "rating": 4, "date": "2 weeks ago", "comment": "Beautiful coat but slightly pricey." },
+      { "id": 4, "author": "Liam H.", "rating": 5, "date": "1 month ago", "comment": "Excellent quality and warmth." }
+    ],
+    "inStock": true,
+    "stock": 14,
+    "isFeatured": true
+  },
+  {
+    "id": 10,
+    "name": "Three-Piece Suit",
+    "price": 2499,
+    "image": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800",
+    "mainCategory": "mens",
+    "subCategories": ["suits", "formalwear"],
+    "description": "Impeccably tailored three-piece suit in Super 150s Italian wool.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 5.0,
+    "reviews": 212,
+    "colors": ["Navy", "Charcoal", "Black"],
+    "images": [
+      "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800",
+      "https://images.unsplash.com/photo-1612233445567-threepiecesuit1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-threepiecesuit2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-threepiecesuit3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Henry D.", "rating": 5, "date": "2 days ago", "comment": "Tailoring is perfect. Very sharp." },
+      { "id": 2, "author": "Oscar P.", "rating": 5, "date": "1 week ago", "comment": "Fabric quality is excellent." },
+      { "id": 3, "author": "Leo W.", "rating": 5, "date": "3 days ago", "comment": "Love the three-piece set. Fits great." },
+      { "id": 4, "author": "George B.", "rating": 4, "date": "2 weeks ago", "comment": "Could use a bit more room in the shoulders." }
+    ],
+    "inStock": true,
+    "stock": 10,
+    "isFeatured": true
+  }, 
+  {
+    "id": 11,
+    "name": "Oxford Dress Shirt",
+    "price": 349,
+    "image": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800",
+    "mainCategory": "mens",
+    "subCategories": ["shirts", "dress shirts"],
+    "description": "Classic Oxford cotton dress shirt with button-down collar.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.7,
+    "reviews": 301,
+    "colors": ["White", "Light Blue", "Pink"],
+    "images": [
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800",
+      "https://images.unsplash.com/photo-1612233445567-oxfordshirt1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-oxfordshirt2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-oxfordshirt3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Ethan L.", "rating": 5, "date": "1 day ago", "comment": "Classic, crisp, fits perfectly." },
+      { "id": 2, "author": "Nathan P.", "rating": 5, "date": "4 days ago", "comment": "Great for office and formal occasions." },
+      { "id": 3, "author": "Oliver M.", "rating": 4, "date": "2 weeks ago", "comment": "Fabric is a bit thin but good quality." },
+      { "id": 4, "author": "Liam K.", "rating": 5, "date": "1 month ago", "comment": "Excellent color and stitching." }
+    ],
+    "inStock": true,
+    "stock": 45,
+    "isFeatured": false
+  },
+  {
+    "id": 12,
+    "name": "Leather Bomber Jacket",
+    "price": 1899,
+    "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800",
+    "mainCategory": "mens",
+    "subCategories": ["outerwear", "jackets", "leather"],
+    "description": "Premium lambskin leather bomber jacket with ribbed collar and cuffs.",
+    "isNew": true,
+    "isBestseller": false,
+    "rating": 4.8,
+    "reviews": 134,
+    "colors": ["Black", "Brown"],
+    "images": [
+      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800",
+      "https://images.unsplash.com/photo-1612233445567-leatherbomber1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-leatherbomber2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-leatherbomber3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Aaron T.", "rating": 5, "date": "2 days ago", "comment": "Soft leather, perfect fit." },
+      { "id": 2, "author": "Brandon C.", "rating": 4, "date": "1 week ago", "comment": "Looks great but sleeves are slightly long." },
+      { "id": 3, "author": "Derek H.", "rating": 5, "date": "3 days ago", "comment": "High-quality craftsmanship. Very happy." },
+      { "id": 4, "author": "Eli R.", "rating": 5, "date": "2 weeks ago", "comment": "Classic bomber, stylish and warm." }
+    ],
+    "inStock": true,
+    "stock": 10,
+    "isFeatured": true
+  },
+  {
+    "id": 13,
+    "name": "Cashmere Turtleneck",
+    "price": 799,
+    "image": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800",
+    "mainCategory": "mens",
+    "subCategories": ["knitwear", "sweaters"],
+    "description": "Luxurious cashmere turtleneck in timeless silhouette.",
+    "isNew": false,
+    "isBestseller": false,
+    "rating": 4.6,
+    "reviews": 87,
+    "colors": ["Black", "Navy", "Camel"],
+    "images": [
+      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800",
+      "https://images.unsplash.com/photo-1612233445567-cashmereturtleneck1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-cashmereturtleneck2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-cashmereturtleneck3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Samuel W.", "rating": 5, "date": "1 day ago", "comment": "Soft, warm, and fits perfectly." },
+      { "id": 2, "author": "Jacob L.", "rating": 4, "date": "4 days ago", "comment": "Very cozy, slightly tight on arms." },
+      { "id": 3, "author": "Noah P.", "rating": 5, "date": "3 days ago", "comment": "Excellent quality cashmere." },
+      { "id": 4, "author": "Liam R.", "rating": 5, "date": "2 weeks ago", "comment": "Colors are rich and true." }
+    ],
+    "inStock": true,
+    "stock": 22,
+    "isFeatured": false
+  },
+  {
+    "id": 14,
+    "name": "Wool Dress Trousers",
+    "price": 599,
+    "image": "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800",
+    "mainCategory": "mens",
+    "subCategories": ["trousers", "formalwear"],
+    "description": "Perfectly pressed wool dress trousers with classic fit.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.7,
+    "reviews": 165,
+    "colors": ["Navy", "Charcoal", "Black"],
+    "images": [
+      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800",
+      "https://images.unsplash.com/photo-1612233445567-wooltrousers1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-wooltrousers2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-wooltrousers3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Evan K.", "rating": 5, "date": "2 days ago", "comment": "Fits perfectly, very comfortable." },
+      { "id": 2, "author": "Mason L.", "rating": 4, "date": "1 week ago", "comment": "Good quality but slightly long." },
+      { "id": 3, "author": "Logan S.", "rating": 5, "date": "3 days ago", "comment": "Great material, classic style." },
+      { "id": 4, "author": "Henry J.", "rating": 4, "date": "2 weeks ago", "comment": "Nice trousers, may need tailoring." }
+    ],
+    "inStock": true,
+    "stock": 28,
+    "isFeatured": false
+  },
+  {
+    "id": 15,
+    "name": "Polo Sweater",
+    "price": 549,
+    "image": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800",
+    "mainCategory": "mens",
+    "subCategories": ["knitwear", "casual"],
+    "description": "Fine merino wool polo sweater with contrast tipping.",
+    "isNew": true,
+    "isBestseller": false,
+    "rating": 4.5,
+    "reviews": 76,
+    "colors": ["Navy", "Grey", "Forest"],
+    "images": [
+      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800",
+      "https://images.unsplash.com/photo-1612233445567-polosweater1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-polosweater2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-polosweater3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Caleb M.", "rating": 5, "date": "1 day ago", "comment": "Soft, comfortable, casual." },
+      { "id": 2, "author": "Luke P.", "rating": 4, "date": "3 days ago", "comment": "Nice quality, fits true to size." },
+      { "id": 3, "author": "Jack S.", "rating": 5, "date": "1 week ago", "comment": "Versatile, great for layering." },
+      { "id": 4, "author": "Eli H.", "rating": 4, "date": "2 weeks ago", "comment": "Color slightly different than photo, still good." }
+    ],
+    "inStock": true,
+    "stock": 19,
+    "isFeatured": false
+  },
+  {
+    "id": 16,
+    "name": "Patent Leather Pumps",
+    "price": 899,
+    "image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800",
+    "mainCategory": "shoes",
+    "subCategories": ["womens", "heels", "pumps"],
+    "description": "Classic pointed-toe pumps in glossy patent leather with 3.5-inch heel.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.8,
+    "reviews": 245,
+    "colors": ["Black", "Nude", "Red"],
+    "images": [
+      "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800",
+      "https://images.unsplash.com/photo-1612233445567-pumps1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-pumps2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-pumps3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Sophia L.", "rating": 5, "date": "1 day ago", "comment": "Elegant, comfortable heel." },
+      { "id": 2, "author": "Isla R.", "rating": 5, "date": "4 days ago", "comment": "High-quality patent leather." },
+      { "id": 3, "author": "Amelia T.", "rating": 4, "date": "2 weeks ago", "comment": "Fit true, slight pinch at toe." },
+      { "id": 4, "author": "Mia H.", "rating": 5, "date": "1 month ago", "comment": "Classic pumps, perfect for events." }
+    ],
+    "inStock": true,
+    "stock": 34,
+    "isFeatured": false
+  },
+  {
+    "id": 17,
+    "name": "Oxford Brogues",
+    "price": 1299,
+    "image": "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=800",
+    "mainCategory": "shoes",
+    "subCategories": ["mens", "dress shoes", "oxfords"],
+    "description": "Handcrafted full-brogue Oxfords in finest calfskin leather.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.9,
+    "reviews": 198,
+    "colors": ["Black", "Brown"],
+    "images": [
+      "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=800",
+      "https://images.unsplash.com/photo-1612233445567-oxfordbrogues1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-oxfordbrogues2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-oxfordbrogues3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Oliver M.", "rating": 5, "date": "1 day ago", "comment": "Excellent craftsmanship and comfort." },
+      { "id": 2, "author": "Henry K.", "rating": 5, "date": "4 days ago", "comment": "Perfect for formal occasions." },
+      { "id": 3, "author": "Ethan L.", "rating": 5, "date": "2 weeks ago", "comment": "Stylish, sturdy, and timeless." },
+      { "id": 4, "author": "Lucas R.", "rating": 4, "date": "1 month ago", "comment": "Leather is soft but slightly stiff at first." }
+    ],
+    "inStock": true,
+    "stock": 26,
+    "isFeatured": true
+  },
+  {
+    "id": 18,
+    "name": "Suede Ankle Boots",
+    "price": 1599,
+    "image": "https://images.unsplash.com/photo-1605812860427-4024433a70fd?w=800",
+    "mainCategory": "shoes",
+    "subCategories": ["womens", "boots"],
+    "description": "Elegant suede ankle boots with stacked heel and almond toe.",
+    "isNew": true,
+    "isBestseller": false,
+    "rating": 4.7,
+    "reviews": 112,
+    "colors": ["Black", "Taupe", "Burgundy"],
+    "images": [
+      "https://images.unsplash.com/photo-1605812860427-4024433a70fd?w=800",
+      "https://images.unsplash.com/photo-1612233445567-suedeboots1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-suedeboots2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-suedeboots3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Emma S.", "rating": 5, "date": "2 days ago", "comment": "Soft suede, very comfortable." },
+      { "id": 2, "author": "Olivia M.", "rating": 4, "date": "1 week ago", "comment": "Heel is perfect, fits well." },
+      { "id": 3, "author": "Sophia L.", "rating": 5, "date": "3 days ago", "comment": "Lovely color, matches everything." },
+      { "id": 4, "author": "Ava P.", "rating": 4, "date": "2 weeks ago", "comment": "Beautiful boots, slightly narrow." }
+    ],
+    "inStock": true,
+    "stock": 18,
+    "isFeatured": false
+  },
+  {
+    "id": 19,
+    "name": "Leather Loafers",
+    "price": 899,
+    "image": "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=800",
+    "mainCategory": "shoes",
+    "subCategories": ["mens", "casual", "loafers"],
+    "description": "Timeless penny loafers in supple Italian leather.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.6,
+    "reviews": 156,
+    "colors": ["Black", "Brown", "Burgundy"],
+    "images": [
+      "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=800",
+      "https://images.unsplash.com/photo-1612233445567-leatherloafers1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-leatherloafers2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-leatherloafers3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Noah P.", "rating": 5, "date": "1 day ago", "comment": "Comfortable and stylish." },
+      { "id": 2, "author": "Ethan L.", "rating": 5, "date": "4 days ago", "comment": "Perfect for casual and office wear." },
+      { "id": 3, "author": "Lucas R.", "rating": 4, "date": "2 weeks ago", "comment": "Quality is excellent but leather is stiff at first." },
+      { "id": 4, "author": "Mason S.", "rating": 5, "date": "1 month ago", "comment": "Great value and classic design." }
+    ],
+    "inStock": true,
+    "stock": 31,
+    "isFeatured": false
+  },
+  {
+    "id": 20,
+    "name": "Strappy Sandals",
+    "price": 749,
+    "image": "https://images.unsplash.com/photo-1562183241-b937e95585b6?w=800",
+    "mainCategory": "shoes",
+    "subCategories": ["womens", "sandals", "heels"],
+    "description": "Delicate strappy sandals with metallic finish and slim heel.",
+    "isNew": true,
+    "isBestseller": false,
+    "rating": 4.5,
+    "reviews": 89,
+    "colors": ["Gold", "Silver", "Rose Gold"],
+    "images": [
+      "https://images.unsplash.com/photo-1562183241-b937e95585b6?w=800",
+      "https://images.unsplash.com/photo-1612233445567-strappysandals1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-strappysandals2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-strappysandals3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Ella P.", "rating": 5, "date": "1 day ago", "comment": "Elegant and fits perfectly." },
+      { "id": 2, "author": "Ava H.", "rating": 4, "date": "4 days ago", "comment": "Straps are delicate but gorgeous." },
+      { "id": 3, "author": "Chloe S.", "rating": 5, "date": "2 weeks ago", "comment": "Perfect heel height and color." },
+      { "id": 4, "author": "Sophia T.", "rating": 4, "date": "1 month ago", "comment": "Beautiful sandals, need careful handling." }
+    ],
+    "inStock": true,
+    "stock": 15,
+    "isFeatured": false
+  },
+  {
+    "id": 21,
+    "name": "Leather Tote Bag",
+    "price": 1899,
+    "image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800",
+    "mainCategory": "accessories",
+    "subCategories": ["bags", "totes"],
+    "description": "Spacious leather tote with interior pockets and adjustable handles.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.9,
+    "reviews": 267,
+    "colors": ["Black", "Cognac", "Navy"],
+    "images": [
+      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800",
+      "https://images.unsplash.com/photo-1612233445567-totebag1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-totebag2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-totebag3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Sarah M.", "rating": 5, "date": "2 days ago", "comment": "Exceptional quality and craftsmanship." },
+      { "id": 2, "author": "James R.", "rating": 5, "date": "1 week ago", "comment": "Luxury through and through." },
+      { "id": 3, "author": "Olivia P.", "rating": 5, "date": "3 days ago", "comment": "Perfect size and soft leather." },
+      { "id": 4, "author": "Emma L.", "rating": 5, "date": "1 month ago", "comment": "Stylish and durable, very happy!" }
+    ],
+    "inStock": true,
+    "stock": 22,
+    "isFeatured": true
+  },
+  {
+    "id": 22,
+    "name": "Silk Scarf",
+    "price": 299,
+    "image": "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=800",
+    "mainCategory": "accessories",
+    "subCategories": ["scarves", "silk"],
+    "description": "Hand-rolled silk twill scarf with timeless pattern.",
+    "isNew": false,
+    "isBestseller": false,
+    "rating": 4.7,
+    "reviews": 134,
+    "colors": ["Multi", "Navy", "Burgundy"],
+    "images": [
+      "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=800",
+      "https://images.unsplash.com/photo-1612233445567-silkscarf1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-silkscarf2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-silkscarf3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Sophia L.", "rating": 5, "date": "1 day ago", "comment": "Beautiful silk, very soft." },
+      { "id": 2, "author": "Isabella P.", "rating": 4, "date": "1 week ago", "comment": "Pattern is lovely, drapes well." },
+      { "id": 3, "author": "Amelia H.", "rating": 5, "date": "2 weeks ago", "comment": "Elegant and versatile accessory." },
+      { "id": 4, "author": "Mia T.", "rating": 4, "date": "3 weeks ago", "comment": "Good quality but slightly smaller than expected." }
+    ],
+    "inStock": true,
+    "stock": 42,
+    "isFeatured": false
+  },
+  {
+    "id": 23,
+    "name": "Leather Belt",
+    "price": 449,
+    "image": "https://images.unsplash.com/photo-1624222247344-550fb60583c2?w=800",
+    "mainCategory": "accessories",
+    "subCategories": ["belts", "leather"],
+    "description": "Classic leather belt with gold-tone buckle.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.6,
+    "reviews": 178,
+    "colors": ["Black", "Brown"],
+    "images": [
+      "https://images.unsplash.com/photo-1624222247344-550fb60583c2?w=800",
+      "https://images.unsplash.com/photo-1612233445567-leatherbelt1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-leatherbelt2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-leatherbelt3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Liam K.", "rating": 5, "date": "1 day ago", "comment": "Sturdy and stylish." },
+      { "id": 2, "author": "Noah P.", "rating": 5, "date": "3 days ago", "comment": "Perfect finishing and fit." },
+      { "id": 3, "author": "Ethan L.", "rating": 4, "date": "1 week ago", "comment": "Good quality leather, buckle is slightly heavy." },
+      { "id": 4, "author": "Mason S.", "rating": 5, "date": "2 weeks ago", "comment": "Classic belt, worth every penny." }
+    ],
+    "inStock": true,
+    "stock": 38,
+    "isFeatured": false
+  },
+  {
+    "id": 24,
+    "name": "Cashmere Scarf",
+    "price": 599,
+    "image": "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=800",
+    "mainCategory": "accessories",
+    "subCategories": ["scarves", "cashmere"],
+    "description": "Ultra-soft cashmere scarf with frayed edges.",
+    "isNew": true,
+    "isBestseller": false,
+    "rating": 4.8,
+    "reviews": 92,
+    "colors": ["Camel", "Grey", "Black"],
+    "images": [
+      "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=800",
+      "https://images.unsplash.com/photo-1612233445567-cashmerescarf1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-cashmerescarf2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-cashmerescarf3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Olivia M.", "rating": 5, "date": "1 day ago", "comment": "Soft, warm, very luxurious." },
+      { "id": 2, "author": "Emma L.", "rating": 5, "date": "4 days ago", "comment": "Great color, excellent cashmere." },
+      { "id": 3, "author": "Sophia T.", "rating": 4, "date": "2 weeks ago", "comment": "Lovely scarf, slightly frays more than expected." },
+      { "id": 4, "author": "Ava H.", "rating": 5, "date": "1 month ago", "comment": "Absolutely love it, perfect for winter." }
+    ],
+    "inStock": true,
+    "stock": 27,
+    "isFeatured": false
+  },
+  {
+    "id": 25,
+    "name": "Structured Handbag",
+    "price": 2499,
+    "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800",
+    "mainCategory": "accessories",
+    "subCategories": ["bags", "handbags"],
+    "description": "Architectural leather handbag with top handle and crossbody strap.",
+    "isNew": true,
+    "isBestseller": true,
+    "rating": 5.0,
+    "reviews": 156,
+    "colors": ["Black", "Ivory", "Burgundy"],
+    "images": [
+      "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800",
+      "https://images.unsplash.com/photo-1612233445567-structuredhandbag1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-structuredhandbag2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-structuredhandbag3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Sarah M.", "rating": 5, "date": "2 days ago", "comment": "Perfectly structured, luxurious feel." },
+      { "id": 2, "author": "James R.", "rating": 5, "date": "1 week ago", "comment": "Elegant, versatile, excellent craftsmanship." },
+      { "id": 3, "author": "Olivia P.", "rating": 5, "date": "3 days ago", "comment": "Highly recommend, beautiful design." },
+      { "id": 4, "author": "Emma L.", "rating": 5, "date": "1 month ago", "comment": "Fits everything I need, classy." }
+    ],
+    "inStock": true,
+    "stock": 11,
+    "isFeatured": true
+  },
+  {
+    "id": 26,
+    "name": "Diamond Solitaire Necklace",
+    "price": 3999,
+    "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800",
+    "mainCategory": "jewelry",
+    "subCategories": ["necklaces", "diamonds"],
+    "description": "Brilliant-cut diamond solitaire on delicate 18k gold chain.",
+    "isNew": true,
+    "isBestseller": true,
+    "rating": 5.0,
+    "reviews": 89,
+    "colors": ["White Gold", "Yellow Gold", "Rose Gold"],
+    "images": [
+      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800",
+      "https://images.unsplash.com/photo-1612233445567-diamondnecklace1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-diamondnecklace2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-diamondnecklace3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Isabella P.", "rating": 5, "date": "1 day ago", "comment": "Absolutely stunning, brilliant cut." },
+      { "id": 2, "author": "Sophia L.", "rating": 5, "date": "1 week ago", "comment": "Elegant and timeless piece." },
+      { "id": 3, "author": "Olivia M.", "rating": 5, "date": "3 days ago", "comment": "Perfect gift, exceeded expectations." },
+      { "id": 4, "author": "Emma H.", "rating": 5, "date": "1 month ago", "comment": "Delicate yet very sparkly, beautiful." }
+    ],
+    "inStock": true,
+    "stock": 8,
+    "isFeatured": true
+  },
+  {
+    "id": 27,
+    "name": "Pearl Stud Earrings",
+    "price": 899,
+    "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800",
+    "mainCategory": "jewelry",
+    "subCategories": ["earrings", "pearls"],
+    "description": "Classic Akoya pearl studs with 14k gold posts.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.9,
+    "reviews": 234,
+    "colors": ["White Gold", "Yellow Gold"],
+    "images": [
+      "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800",
+      "https://images.unsplash.com/photo-1612233445567-pearlearrings1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-pearlearrings2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-pearlearrings3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Charlotte P.", "rating": 5, "date": "1 day ago", "comment": "Elegant and timeless." },
+      { "id": 2, "author": "Amelia H.", "rating": 5, "date": "3 days ago", "comment": "Perfect size, very classy." },
+      { "id": 3, "author": "Mia T.", "rating": 5, "date": "1 week ago", "comment": "High-quality pearls, beautiful luster." },
+      { "id": 4, "author": "Harper L.", "rating": 4, "date": "2 weeks ago", "comment": "Lovely earrings, slightly smaller than expected." }
+    ],
+    "inStock": true,
+    "stock": 24,
+    "isFeatured": false
+  },
+  {
+    "id": 28,
+    "name": "Gold Bangle Bracelet",
+    "price": 1299,
+    "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800",
+    "mainCategory": "jewelry",
+    "subCategories": ["bracelets", "gold"],
+    "description": "Sculptural 18k gold bangle with polished finish.",
+    "isNew": false,
+    "isBestseller": false,
+    "rating": 4.7,
+    "reviews": 76,
+    "colors": ["Yellow Gold", "Rose Gold"],
+    "images": [
+      "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800",
+      "https://images.unsplash.com/photo-1612233445567-goldbangle1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-goldbangle2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-goldbangle3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Ella P.", "rating": 5, "date": "1 day ago", "comment": "Beautiful craftsmanship." },
+      { "id": 2, "author": "Avery L.", "rating": 4, "date": "3 days ago", "comment": "Shiny and elegant, fits well." },
+      { "id": 3, "author": "Aria H.", "rating": 5, "date": "1 week ago", "comment": "Lovely design, very classy." },
+      { "id": 4, "author": "Scarlett M.", "rating": 4, "date": "2 weeks ago", "comment": "Beautiful but slightly heavy." }
+    ],
+    "inStock": true,
+    "stock": 15,
+    "isFeatured": false
+  },
+  {
+    "id": 29,
+    "name": "Tennis Bracelet",
+    "price": 4999,
+    "image": "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800",
+    "mainCategory": "jewelry",
+    "subCategories": ["bracelets", "diamonds"],
+    "description": "Classic diamond tennis bracelet in platinum setting.",
+    "isNew": true,
+    "isBestseller": true,
+    "rating": 5.0,
+    "reviews": 112,
+    "colors": ["Platinum", "White Gold"],
+    "images": [
+      "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800",
+      "https://images.unsplash.com/photo-1612233445567-tennisbracelet1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-tennisbracelet2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-tennisbracelet3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Chloe S.", "rating": 5, "date": "1 day ago", "comment": "Exquisite sparkle, perfect gift." },
+      { "id": 2, "author": "Ella P.", "rating": 5, "date": "3 days ago", "comment": "High-quality, looks amazing." },
+      { "id": 3, "author": "Lily H.", "rating": 5, "date": "1 week ago", "comment": "Beautifully crafted, elegant." },
+      { "id": 4, "author": "Zoe L.", "rating": 5, "date": "2 weeks ago", "comment": "Stunning piece, highly recommend." }
+    ],
+    "inStock": true,
+    "stock": 6,
+    "isFeatured": true
+  },
+  {
+    "id": 30,
+    "name": "Cocktail Ring",
+    "price": 2299,
+    "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800",
+    "mainCategory": "jewelry",
+    "subCategories": ["rings", "statement"],
+    "description": "Bold cocktail ring with semi-precious stones in gold setting.",
+    "isNew": false,
+    "isBestseller": false,
+    "rating": 4.6,
+    "reviews": 67,
+    "colors": ["Yellow Gold", "Rose Gold"],
+    "images": [
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800",
+      "https://images.unsplash.com/photo-1612233445567-cocktailring1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-cocktailring2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-cocktailring3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Amelia T.", "rating": 5, "date": "1 day ago", "comment": "Bold, eye-catching, elegant." },
+      { "id": 2, "author": "Isla R.", "rating": 4, "date": "3 days ago", "comment": "Stunning, slightly heavy on finger." },
+      { "id": 3, "author": "Harper L.", "rating": 5, "date": "1 week ago", "comment": "Beautiful colors and design." },
+      { "id": 4, "author": "Ava H.", "rating": 4, "date": "2 weeks ago", "comment": "Lovely ring, takes careful handling." }
+    ],
+    "inStock": true,
+    "stock": 12,
+    "isFeatured": false
+  },
+  {
+    "id": 31,
+    "name": "Kids Cashmere Cardigan",
+    "price": 399,
+    "image": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800",
+    "mainCategory": "kids",
+    "subCategories": ["knitwear", "sweaters"],
+    "description": "Soft cashmere cardigan with pearl button closure.",
+    "isNew": true,
+    "isBestseller": false,
+    "rating": 4.8,
+    "reviews": 45,
+    "colors": ["Cream", "Pink", "Navy"],
+    "images": [
+      "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800",
+      "https://images.unsplash.com/photo-1612233445567-kidscardigan1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-kidscardigan2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-kidscardigan3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Liam K.", "rating": 5, "date": "1 day ago", "comment": "Soft and adorable." },
+      { "id": 2, "author": "Noah P.", "rating": 5, "date": "3 days ago", "comment": "Fits perfectly, high quality." },
+      { "id": 3, "author": "Ethan L.", "rating": 5, "date": "1 week ago", "comment": "Lovely cardigan for my daughter." },
+      { "id": 4, "author": "Mason S.", "rating": 5, "date": "2 weeks ago", "comment": "Very soft, worth every penny." }
+    ],
+    "inStock": true,
+    "stock": 18,
+    "isFeatured": false
+  },
+  {
+    "id": 32,
+    "name": "Kids Wool Peacoat",
+    "price": 599,
+    "image": "https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=800",
+    "mainCategory": "kids",
+    "subCategories": ["outerwear", "coats"],
+    "description": "Classic double-breasted peacoat in premium wool blend.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.7,
+    "reviews": 89,
+    "colors": ["Navy", "Red", "Camel"],
+    "images": [
+      "https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=800",
+      "https://images.unsplash.com/photo-1612233445567-kidspeacoat1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-kidspeacoat2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-kidspeacoat3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Sophia T.", "rating": 5, "date": "1 day ago", "comment": "Perfect for winter, very warm." },
+      { "id": 2, "author": "Mia L.", "rating": 4, "date": "3 days ago", "comment": "Looks stylish, great quality." },
+      { "id": 3, "author": "Emma P.", "rating": 5, "date": "1 week ago", "comment": "Well-made and durable." },
+      { "id": 4, "author": "Ava H.", "rating": 5, "date": "2 weeks ago", "comment": "Lovely coat, my son loves it." }
+    ],
+    "inStock": true,
+    "stock": 22,
+    "isFeatured": false
+  },
+  {
+    "id": 33,
+    "name": "Kids Leather Shoes",
+    "price": 349,
+    "image": "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800",
+    "mainCategory": "kids",
+    "subCategories": ["shoes", "dress shoes"],
+    "description": "Polished leather dress shoes with cushioned insole.",
+    "isNew": false,
+    "isBestseller": false,
+    "rating": 4.5,
+    "reviews": 56,
+    "colors": ["Black", "Brown"],
+    "images": [
+      "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800",
+      "https://images.unsplash.com/photo-1612233445567-kidsshoes1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-kidsshoes2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-kidsshoes3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Liam K.", "rating": 5, "date": "1 day ago", "comment": "Good fit, comfortable." },
+      { "id": 2, "author": "Noah P.", "rating": 4, "date": "3 days ago", "comment": "Well-made but stiff at first." },
+      { "id": 3, "author": "Ethan L.", "rating": 5, "date": "1 week ago", "comment": "Classic look, great quality." },
+      { "id": 4, "author": "Mason S.", "rating": 5, "date": "2 weeks ago", "comment": "My daughter loves them." }
+    ],
+    "inStock": true,
+    "stock": 28,
+    "isFeatured": false
+  },
+  {
+    "id": 34,
+    "name": "Luxury Watch",
+    "price": 8999,
+    "image": "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800",
+    "mainCategory": "accessories",
+    "subCategories": ["watches", "luxury"],
+    "description": "Swiss-made automatic watch with leather strap and sapphire crystal.",
+    "isNew": true,
+    "isBestseller": true,
+    "rating": 5.0,
+    "reviews": 167,
+    "colors": ["Silver", "Gold", "Rose Gold"],
+    "images": [
+      "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800",
+      "https://images.unsplash.com/photo-1612233445567-luxurywatch1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-luxurywatch2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-luxurywatch3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Sophia L.", "rating": 5, "date": "1 day ago", "comment": "Absolutely perfect, very classy." },
+      { "id": 2, "author": "Isabella P.", "rating": 5, "date": "3 days ago", "comment": "Luxurious feel, keeps perfect time." },
+      { "id": 3, "author": "Amelia H.", "rating": 5, "date": "1 week ago", "comment": "Beautiful craftsmanship." },
+      { "id": 4, "author": "Mia T.", "rating": 5, "date": "2 weeks ago", "comment": "Highly recommend, a statement piece." }
+    ],
+    "inStock": true,
+    "stock": 5,
+    "isFeatured": true
+  },
+  {
+    "id": 35,
+    "name": "Designer Sunglasses",
+    "price": 599,
+    "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800",
+    "mainCategory": "accessories",
+    "subCategories": ["sunglasses", "eyewear"],
+    "description": "Iconic oversized sunglasses with UV protection and gold accents.",
+    "isNew": false,
+    "isBestseller": true,
+    "rating": 4.7,
+    "reviews": 201,
+    "colors": ["Black", "Tortoise", "Nude"],
+    "images": [
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800",
+      "https://images.unsplash.com/photo-1612233445567-designersunglasses1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-designersunglasses2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-designersunglasses3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Charlotte P.", "rating": 5, "date": "1 day ago", "comment": "Stylish and protects eyes perfectly." },
+      { "id": 2, "author": "Amelia H.", "rating": 4, "date": "3 days ago", "comment": "Great look but slightly heavy." },
+      { "id": 3, "author": "Mia T.", "rating": 5, "date": "1 week ago", "comment": "High-quality lenses, love the design." },
+      { "id": 4, "author": "Harper L.", "rating": 5, "date": "2 weeks ago", "comment": "Perfect fit and very chic." }
+    ],
+    "inStock": true,
+    "stock": 36,
+    "isFeatured": false
+  }
+]
+
