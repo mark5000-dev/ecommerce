@@ -1,0 +1,105 @@
+[
+  {
+    "id": "womens",
+    "name": "Women's Collection",
+    "slug": "womens-collection",
+    "description": "Elegant pieces crafted for the modern woman",
+    "image": "https://images.unsplash.com/photo-1661268095505-cbfb42ef6f2c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBmYXNoaW9uJTIwd29tZW58ZW58MXx8fHwxNzYyMDg2MTM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "productCount": 156,
+    "featured": true,
+    "subcategories": [
+      { "id": "dresses", "name": "Dresses", "slug": "dresses" },
+      { "id": "tops", "name": "Tops", "slug": "tops" },
+      { "id": "skirts", "name": "Skirts", "slug": "skirts" },
+      { "id": "outerwear", "name": "Outerwear", "slug": "outerwear" },
+      { "id": "suits", "name": "Suits", "slug": "suits" },
+      { "id": "loungewear", "name": "Loungewear", "slug": "loungewear" },
+      { "id": "accessories", "name": "Accessories", "slug": "accessories" }
+    ]
+  },
+  {
+    "id": "mens",
+    "name": "Men's Collection",
+    "slug": "mens-collection",
+    "description": "Sophisticated tailoring and timeless style",
+    "image": "https://images.unsplash.com/photo-1600481006437-5ef63a680aa5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBmYXNoaW9uJTIwbWVufGVufDF8fHx8MTc2MjA4NjEzN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    "productCount": 124,
+    "featured": true,
+    "subcategories": [
+      { "id": "shirts", "name": "Shirts", "slug": "shirts" },
+      { "id": "suits", "name": "Suits", "slug": "suits" },
+      { "id": "trousers", "name": "Trousers", "slug": "trousers" },
+      { "id": "jackets", "name": "Jackets", "slug": "jackets" },
+      { "id": "outerwear", "name": "Outerwear", "slug": "outerwear" },
+      { "id": "loungewear", "name": "Loungewear", "slug": "loungewear" },
+      { "id": "accessories", "name": "Accessories", "slug": "accessories" }
+    ]
+  },
+  {
+    "id": "kids",
+    "name": "Kids Collection",
+    "slug": "kids-collection",
+    "description": "Playful styles and durable clothing for kids of all ages",
+    "image": "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1080",
+    "productCount": 58,
+    "featured": false,
+    "subcategories": [
+      { "id": "kids-tops", "name": "Tops", "slug": "kids-tops" },
+      { "id": "kids-bottoms", "name": "Bottoms", "slug": "kids-bottoms" },
+      { "id": "kids-dresses", "name": "Dresses", "slug": "kids-dresses" },
+      { "id": "kids-outerwear", "name": "Outerwear", "slug": "kids-outerwear" },
+      { "id": "kids-sleepwear", "name": "Sleepwear", "slug": "kids-sleepwear" },
+      { "id": "kids-shoes", "name": "Shoes", "slug": "kids-shoes" }
+    ]
+  },
+  {
+    "id": "accessories",
+    "name": "Accessories",
+    "slug": "accessories",
+    "description": "Finishing touches that elevate any ensemble",
+    "image": "https://images.unsplash.com/photo-1591348278900-019a8a2a8b1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
+    "productCount": 89,
+    "featured": false,
+    "subcategories": [
+      { "id": "bags", "name": "Bags", "slug": "bags" },
+      { "id": "belts", "name": "Belts", "slug": "belts" },
+      { "id": "sunglasses", "name": "Sunglasses", "slug": "sunglasses" },
+      { "id": "scarves", "name": "Scarves", "slug": "scarves" },
+      { "id": "hats", "name": "Hats", "slug": "hats" },
+      { "id": "watches", "name": "Watches", "slug": "watches" }
+    ]
+  },
+  {
+    "id": "jewelry",
+    "name": "Jewelry",
+    "slug": "jewelry",
+    "description": "Exquisite pieces for every occasion",
+    "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
+    "productCount": 67,
+    "featured": true,
+    "subcategories": [
+      { "id": "necklaces", "name": "Necklaces", "slug": "necklaces" },
+      { "id": "earrings", "name": "Earrings", "slug": "earrings" },
+      { "id": "bracelets", "name": "Bracelets", "slug": "bracelets" },
+      { "id": "rings", "name": "Rings", "slug": "rings" },
+      { "id": "luxury-sets", "name": "Luxury Sets", "slug": "luxury-sets" }
+    ]
+  },
+  {
+    "id": "shoes",
+    "name": "Shoes",
+    "slug": "shoes",
+    "description": "From casual elegance to formal sophistication",
+    "image": "https://images.unsplash.com/photo-1581101767113-1677fc2beaa8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
+    "productCount": 92,
+    "featured": true,
+    "subcategories": [
+      { "id": "sneakers", "name": "Sneakers", "slug": "sneakers" },
+      { "id": "formal-shoes", "name": "Formal Shoes", "slug": "formal-shoes" },
+      { "id": "heels", "name": "Heels", "slug": "heels" },
+      { "id": "flats", "name": "Flats", "slug": "flats" },
+      { "id": "boots", "name": "Boots", "slug": "boots" },
+      { "id": "sandals", "name": "Sandals", "slug": "sandals" }
+    ]
+  }
+]
