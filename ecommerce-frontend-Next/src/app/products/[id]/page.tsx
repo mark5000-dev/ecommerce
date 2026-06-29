@@ -182,6 +182,7 @@ export default function SingleProduct({ params }: PageProps) {
       try {
         const idFromSlug = parseInt((slug?.split("-").pop() || "0"), 10);
         const found = await api.getProductById(idFromSlug);
+        console.log("Found the product", found);
 
         if (found) {
           // If the database returns empty comments, merge mock reviews to keep premium visual styling
@@ -349,8 +350,8 @@ export default function SingleProduct({ params }: PageProps) {
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
                       className={`relative w-7 h-7 rounded-full border border-black/10 transition-all ${selectedColor === color.name
-                          ? "ring-2 ring-offset-2 ring-[#D4AF37] scale-105"
-                          : "hover:scale-105"
+                        ? "ring-2 ring-offset-2 ring-[#D4AF37] scale-105"
+                        : "hover:scale-105"
                         }`}
                       style={{ backgroundColor: color.hex }}
                       title={color.name}
@@ -375,8 +376,8 @@ export default function SingleProduct({ params }: PageProps) {
                       key={size}
                       onClick={() => setSelectedSize(size)}
                       className={`flex-1 border text-xs py-2.5 tracking-wider font-medium uppercase transition-all ${selectedSize === size
-                          ? "border-foreground bg-foreground text-background"
-                          : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
+                        ? "border-foreground bg-foreground text-background"
+                        : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
                         }`}
                     >
                       {size}

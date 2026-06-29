@@ -122,17 +122,17 @@ const Hero: React.FC = () => {
               Winter 2025 Collection
             </span>
           </div>
-          
+
           <h1 className="font-serif text-white text-[3.5rem] md:text-[5rem] lg:text-[6rem] leading-[1.1] mb-6">
             Timeless
             <br />
             Elegance
           </h1>
-          
+
           <p className="text-white/90 text-lg md:text-xl mb-8 max-w-lg font-light">
             Discover our curated collection of luxury fashion pieces that define sophistication and style.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
               href="/categories"
@@ -166,7 +166,7 @@ const CategoryShowcase: React.FC = () => {
   return (
     <section id="categories" className="py-20 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
-        
+
         {/* Module Title Deck */}
         <div className="text-center mb-16">
           <h2 className="font-serif text-[2.5rem] md:text-[3.5rem] mb-4 text-foreground">
@@ -175,13 +175,21 @@ const CategoryShowcase: React.FC = () => {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-light">
             Explore our carefully curated collections designed for the modern connoisseur
           </p>
+          <Link
+            href="/categories"
+            className="text-[#D4AF37] hover:text-[#C5A028] font-medium inline-flex items-center gap-1 shrink-0 group "
+          >
+            View All Categories
+            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
+
 
         {/* Dynamic Card Assembly Grid */}
         <div className="grid md:grid-cols-3 gap-8">
           {categories.map((category) => (
-            <Link 
-              href={`/category/${category.slug}`} 
+            <Link
+              href={`/categories/${category.slug}`}
               key={category.id}
               className="group relative h-[450px] overflow-hidden rounded-lg shadow-md block"
             >
@@ -192,7 +200,7 @@ const CategoryShowcase: React.FC = () => {
               />
               {/* Linear Matte Shade */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              
+
               {/* Core Anchored Text Metrics */}
               <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                 <h3 className="font-serif text-white text-2xl mb-1 flex items-center gap-2">
@@ -239,10 +247,10 @@ const ProductGrid: React.FC = () => {
   const updateScrollButtons = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      
+
       // Show left button only after scrolling right (buffer of 10px)
       setShowLeftArrow(scrollLeft > 10);
-      
+
       // Hide right button if we've reached the end of the container track
       setShowRightArrow(scrollLeft + clientWidth < scrollWidth - 10);
     }
@@ -262,7 +270,7 @@ const ProductGrid: React.FC = () => {
     if (scrollContainerRef.current) {
       const { clientWidth } = scrollContainerRef.current;
       // Scroll by 80% of the visible container frame width for context continuation
-      const scrollAmount = clientWidth * 0.8; 
+      const scrollAmount = clientWidth * 0.8;
 
       scrollContainerRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
@@ -274,7 +282,7 @@ const ProductGrid: React.FC = () => {
   return (
     <section id="products" className="py-20 bg-card">
       <div className="container mx-auto px-4 lg:px-8">
-        
+
         {/* Header Segment */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
           <div>
@@ -285,18 +293,18 @@ const ProductGrid: React.FC = () => {
               Highly coveted seasonal releases, tailored for distinction.
             </p>
           </div>
-          <Link 
-            href="/products" 
+          <Link
+            href="/products"
             className="text-[#D4AF37] hover:text-[#C5A028] font-medium inline-flex items-center gap-1 shrink-0 group"
           >
-            View All Lookbook items 
+            View All Lookbook items
             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
         {/* Carousel Slider Workspace Area */}
         <div className="relative group">
-          
+
           {/* Left Arrow Controller Button */}
           {showLeftArrow && (
             <button
@@ -325,7 +333,7 @@ const ProductGrid: React.FC = () => {
           <div
             ref={scrollContainerRef}
             className="flex gap-8 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory"
-            style={{ 
+            style={{
               scrollbarWidth: "none",     /* Hides Firefox scrollbar */
               msOverflowStyle: "none",    /* Hides IE/Edge scrollbar */
             }}
@@ -340,8 +348,8 @@ const ProductGrid: React.FC = () => {
             {isLoading ? (
               <div className="py-12 text-center text-muted-foreground w-full">Curating showcase...</div>
             ) : products.map((product) => (
-              <div 
-                key={product.id} 
+              <div
+                key={product.id}
                 className="w-[280px] sm:w-[320px] shrink-0 snap-start"
               >
                 <ProductCard product={product} />
@@ -362,7 +370,7 @@ export const AboutSection = () => {
     <section id="about" className="py-20 bg-card border-b border-border">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
-          
+
           {/* Showcase Display Image */}
           <div className="order-2 md:order-1">
             <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-xl group">
@@ -385,11 +393,11 @@ export const AboutSection = () => {
                 The Essence of LUXÉ
               </h2>
               <p className="text-muted-foreground mb-8 text-lg font-light leading-relaxed">
-                Founded on the principles of timeless elegance and uncompromised craftsmanship, 
-                LUXÉ bridges the gap between classical tailoring and modern sophistication. 
+                Founded on the principles of timeless elegance and uncompromised craftsmanship,
+                LUXÉ bridges the gap between classical tailoring and modern sophistication.
                 We believe exceptional garments shouldn't just turn heads—they should tell a story.
               </p>
-              
+
               <div className="space-y-4 mb-8">
                 {[
                   { title: "Sartorial Excellence", desc: "Partnering with multi-generational European ateliers." },

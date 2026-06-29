@@ -43,3 +43,9 @@ bun run index.ts
 ```
 
 4. Use the endpoints under `/api/*`.
+
+
+## future additions
+ Change the backend to a feature based structure
+ use drizzle to instantiate the database
+ 
