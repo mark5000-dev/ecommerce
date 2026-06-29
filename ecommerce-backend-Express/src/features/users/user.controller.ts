@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { eq } from 'drizzle-orm';
-import { drizzleDb } from '../db/client';
-import { users } from '../db/schema';
+import { drizzleDb } from '../../core/db/client';
+import { users } from './user.schema';
 
 const toUserResponse = (user: any) => {
   const { passwordHash, ...rest } = user;

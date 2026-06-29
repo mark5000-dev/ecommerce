@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { authenticateJWT } from '../middlewares/auth';
-import { getCart, addCartItem, updateCartItem, deleteCartItem, applyPromoCode } from '../controllers/cartController';
+import { authenticateJWT } from '../../core/middlewares/auth';
+import { getCart, addCartItem, updateCartItem, deleteCartItem, applyPromoCode } from './cart.controller';
 
 const router = Router();
 

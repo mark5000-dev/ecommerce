@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authenticateJWT } from '../middlewares/auth';
+import { authenticateJWT } from '../../core/middlewares/auth';
 import {
   getProfile,
   updateProfile,
@@ -11,7 +11,7 @@ import {
   addPaymentMethod,
   updatePaymentMethod,
   deletePaymentMethod,
-} from '../controllers/userController';
+} from './user.controller';
 
 const router = Router();
 

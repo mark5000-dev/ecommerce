@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { eq } from 'drizzle-orm';
-import { drizzleDb } from '../db/client';
-import { wishlistItems } from '../db/schema';
+import { drizzleDb } from '../../core/db/client';
+import { wishlistItems } from './wishlist.schema';
 
 export const getWishlist = async (_req: Request, res: Response) => {
   const rows = await drizzleDb.select().from(wishlistItems);

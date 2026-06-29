@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { eq } from 'drizzle-orm';
-import { drizzleDb } from '../db/client';
-import { products } from '../db/schema';
+import { drizzleDb } from '../../core/db/client';
+import { products } from './product.schema';
 
 const parseJsonArray = (value: string | null | undefined) => {
   if (!value) return [];

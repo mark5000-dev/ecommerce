@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --hot index.ts",
-    "seed": "bun run src/seed.ts"
+    "seed": "bun run src/utils/seed.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { drizzleDb, db } from './db/client';
-import { users, products, categories, orders, cartItems, wishlistItems, newsletterSubscribers } from './db/schema';
+import { drizzleDb, db } from './core/db/client';
+import { schema } from './core/db/schema';
+
+const { users, products, categories, orders, cartItems, wishlistItems, newsletterSubscribers } = schema;
+
 
 const dataDir = path.resolve('src', 'data');
 

@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { eq } from 'drizzle-orm';
-import { drizzleDb } from '../db/client';
-import { orders } from '../db/schema';
+import { drizzleDb } from '../../core/db/client';
+import { orders } from './order.schema';
 
 export const listOrders = async (_req: Request, res: Response) => {
   const rows = await drizzleDb.select().from(orders);

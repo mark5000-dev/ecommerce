@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { eq } from 'drizzle-orm';
-import { drizzleDb } from '../db/client';
-import { newsletterSubscribers } from '../db/schema';
+import { drizzleDb } from '../../core/db/client';
+import { newsletterSubscribers } from './newsletter.schema';
 
 export const subscribeNewsletter = async (req: Request, res: Response) => {
   const { email } = req.body;

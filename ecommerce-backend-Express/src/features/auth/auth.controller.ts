@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 import { eq } from 'drizzle-orm';
-import { drizzleDb } from '../db/client';
-import { users } from '../db/schema';
-import { createToken } from '../middlewares/auth';
+import { drizzleDb } from '../../core/db/client';
+import { users } from '../users/user.schema';
+import { createToken } from '../../core/middlewares/auth';
 
 export const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;

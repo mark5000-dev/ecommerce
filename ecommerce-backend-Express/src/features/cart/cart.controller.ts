@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express';
 import { eq } from 'drizzle-orm';
-import { drizzleDb } from '../db/client';
-import { cartItems, products } from '../db/schema';
+import { drizzleDb } from '../../core/db/client';
+import { cartItems } from './cart.schema';
+import { products } from '../products/product.schema';
 
 const getCartItemsWithPrices = async () => {
   const rows = await drizzleDb.select().from(cartItems);
