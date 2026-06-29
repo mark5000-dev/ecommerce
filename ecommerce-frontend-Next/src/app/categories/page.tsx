@@ -5,24 +5,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { CategoryCard } from "@/features/categoryCard";
 import type { Category } from "@/model";
+import { api } from "@/lib/api";
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Read raw file buffers dynamically inside client contexts
+  // Fetch categories from Express backend API
   useEffect(() => {
     async function fetchCategoriesData() {
       try {
-        const response = await fetch("/mock_categories.json");
-        if (!response.ok) throw new Error("Could not fetch categories matrix profiles.");
-        const data = await response.json();
+        const data = await api.getCategories();
         
         // Accommodate standard array formatting fields or top-level wrappers smoothly
         const resolvedData = Array.isArray(data) ? data : data.categories || [];
         setCategories(resolvedData);
       } catch (error) {
-        console.error("Critical failure during mock categories synchronization schema mapping:", error);
+        console.error("Critical failure during categories API synchronization:", error);
       } finally {
         setIsLoading(false);
       }
@@ -64,7 +63,7 @@ export default function CategoriesPage() {
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {categories.map((category: Category) => (
-                  <CategoryCard key={category.id} category={category} />
+                  <CategoryCard key={category.categoryId} category={category} />
                 ))}
               </div>
             )}

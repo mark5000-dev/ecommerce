@@ -7,6 +7,7 @@ import { ItemsGrid } from "@/features/itemsGrid";
 import { ProductCard } from "@/features/productCard";
 import { Newsletter } from "@/features/newsletter";
 import type { Product, Category } from "@/model";
+import { api } from "@/lib/api";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -28,31 +29,14 @@ export default function SingleCategoryPage({ params }: PageProps) {
     async function loadCategoryAndProducts() {
       try {
         setLoading(true);
+        const data = await api.getCategoryProducts(slug);
         
-        // 1. Fetch category metadata profile definitions
-        const categoryRes = await fetch("/mock_categories.json");
-        if (!categoryRes.ok) throw new Error("Failed to load category database entries.");
-        const categoryData = await categoryRes.json();
-        const categoriesList: Category[] = Array.isArray(categoryData) ? categoryData : categoryData.categories || [];
-        const foundCategory = categoriesList.find((c) => c.slug === slug);
-        
-        if (!foundCategory) {
-          setLoading(false);
-          return;
+        if (data && data.category) {
+          setCategory(data.category);
+          setAllProducts(data.products || []);
         }
-        setCategory(foundCategory);
-
-        // 2. Fetch inventory array matching category identity link
-        const productsRes = await fetch("/sample_data.json");
-        if (!productsRes.ok) throw new Error("Failed to load product database entries.");
-        const productsData = await productsRes.json();
-        const productsList: Product[] = Array.isArray(productsData) ? productsData : productsData.products || [];
-        
-        // Filter elements bound directly to found category id reference keys
-        const matchedProducts = productsList.filter((p) => p.mainCategory === foundCategory.id);
-        setAllProducts(matchedProducts);
       } catch (error) {
-        console.error("Migration runtime exception loading category profile mapping arrays:", error);
+        console.error("Migration runtime exception loading category products:", error);
       } finally {
         setLoading(false);
       }

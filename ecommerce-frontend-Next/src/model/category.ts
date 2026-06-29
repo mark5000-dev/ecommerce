@@ -5,7 +5,7 @@ export interface Subcategory {
 }
 
 export interface Category {
-  id: string;
+  categoryId: string;
   name: string;            // e.g., "Women"
   slug: string;            // e.g., "women" (used in URLs)
   image: string;           // hero/banner image

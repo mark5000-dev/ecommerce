@@ -6,6 +6,7 @@ import { PageHero } from "@/features/pageHero";
 import { ItemsGrid } from "@/features/itemsGrid";
 import { ProductCard } from "@/features/productCard";
 import type { Product } from "@/model";
+import { api } from "@/lib/api";
 
 const subcategories = [
   { id: "womens-collection", label: "Women" },
@@ -21,27 +22,24 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortOption, setSortOption] = useState<string>("featured");
-  const [visibleCount, setVisibleCount] = useState<number>(8);
+  const [visibleCount, setVisibleCount] = useState<number>(20);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Hydrate data directly from the public/sample_data.json path
+  // Hydrate data directly from the Express backend API
   useEffect(() => {
-    async function loadMockData() {
+    async function loadData() {
       try {
-        const response = await fetch("/sample_data.json");
-        if (!response.ok) throw new Error("Failed to load sample data");
-        const data = await response.ok ? await response.json() : [];
-        
+        const data = await api.getProducts({ limit: 100 });
         // Handle both raw arrays or objects containing a products field
         const fallbackArray = Array.isArray(data) ? data : data.products || [];
         setProducts(fallbackArray);
       } catch (error) {
-        console.error("Error reading mockup data profile:", error);
+        console.error("Error reading backend products:", error);
       } finally {
         setIsLoading(false);
       }
     }
-    loadMockData();
+    loadData();
   }, []);
 
   // Compute sorting workflows locally prior to API integration
@@ -80,7 +78,7 @@ export default function ProductsPage() {
       <section className="py-6 bg-background border-b border-border">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            
+
             {/* Left: Filter Buttons */}
             <div className="flex flex-wrap gap-2">
               {subcategories.map((sub) => (
@@ -105,17 +103,15 @@ export default function ProductsPage() {
                 <div className="hidden sm:flex border border-border rounded overflow-hidden">
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors ${
-                      viewMode === "grid" ? "bg-neutral-100 text-foreground" : "bg-background text-muted-foreground"
-                    }`}
+                    className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors ${viewMode === "grid" ? "bg-neutral-100 text-foreground" : "bg-background text-muted-foreground"
+                      }`}
                   >
                     Grid
                   </button>
                   <button
                     onClick={() => setViewMode("list")}
-                    className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider border-l border-border transition-colors ${
-                      viewMode === "list" ? "bg-neutral-100 text-foreground" : "bg-background text-muted-foreground"
-                    }`}
+                    className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider border-l border-border transition-colors ${viewMode === "list" ? "bg-neutral-100 text-foreground" : "bg-background text-muted-foreground"
+                      }`}
                   >
                     List
                   </button>
@@ -156,7 +152,7 @@ export default function ProductsPage() {
               viewMode={viewMode}
               gridCols={{ default: 1, sm: 2, lg: 3, xl: 4 }}
               showLoadMore={visibleCount < processedProducts.length}
-              onLoadMore={() => setVisibleCount((prev) => prev + 4)}
+              onLoadMore={() => setVisibleCount((prev) => prev + 8)}
               loadMoreLabel="Load More Products"
               renderItem={(product: Product) => (
                 <ProductCard key={product.id} product={product} />

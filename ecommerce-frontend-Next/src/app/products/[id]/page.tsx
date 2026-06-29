@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { PageHero } from "@/features/pageHero";
 import { ProductCard } from "@/features/productCard"; // Ensure this import path is accurate for your setup
 import type { Product } from "@/model";
+import { api } from "@/lib/api";
 
 const oneOP: Product = {
   id: 1,
@@ -54,9 +55,7 @@ function RelatedProducts({ currentCategory, currentProductId }: RelatedProductsP
   useEffect(() => {
     async function fetchRelated() {
       try {
-        const response = await fetch("/sample_data.json");
-        if (!response.ok) return;
-        const data = await response.json();
+        const data = await api.getProducts({ category: currentCategory, limit: 12 });
         const list = Array.isArray(data) ? data : data.products || [];
         setProducts(list);
       } catch (err) {
@@ -69,8 +68,8 @@ function RelatedProducts({ currentCategory, currentProductId }: RelatedProductsP
   // Compute matched categorical selections safely handling mismatched ID type variations
   const filteredProducts = useMemo(() => {
     return products.filter(
-      (p) => 
-        p.mainCategory?.toLowerCase() === currentCategory?.toLowerCase() && 
+      (p) =>
+        p.mainCategory?.toLowerCase() === currentCategory?.toLowerCase() &&
         String(p.id) !== String(currentProductId)
     );
   }, [products, currentCategory, currentProductId]);
@@ -182,17 +181,19 @@ export default function SingleProduct({ params }: PageProps) {
     async function loadProductDetail() {
       try {
         const idFromSlug = parseInt((slug?.split("-").pop() || "0"), 10);
-        
-        const response = await fetch("/sample_data.json");
-        if (!response.ok) throw new Error();
-        
-        const data = await response.json();
-        const fallbackArray = Array.isArray(data) ? data : data.products || [];
-        const found = fallbackArray.find((p: any) => p.id === idFromSlug);
+        const found = await api.getProductById(idFromSlug);
 
-        setProduct(found || oneOP);
+        if (found) {
+          // If the database returns empty comments, merge mock reviews to keep premium visual styling
+          if (!found.comments || found.comments.length === 0) {
+            found.comments = oneOP.comments;
+          }
+          setProduct(found);
+        } else {
+          setProduct(oneOP);
+        }
       } catch (err) {
-        console.log("Using dynamic layout fallback reference structure.");
+        console.log("Using dynamic layout fallback reference structure.", err);
         setProduct(oneOP);
       } finally {
         setLoading(false);
@@ -237,7 +238,7 @@ export default function SingleProduct({ params }: PageProps) {
         description={""}
         breadcrumbs={[
           { label: "Products", href: "/products" },
-          { label: product.mainCategory || "Collection", href: `/category/${product.mainCategory || "all"}` },
+          { label: product.mainCategory || "Collection", href: `/categories/${["womens", "mens", "kids"].includes(product.mainCategory) ? product.mainCategory + "-collection" : product.mainCategory || "all"}` },
           { label: product.name || "" },
         ]}
       />
@@ -245,7 +246,7 @@ export default function SingleProduct({ params }: PageProps) {
       <section className="py-12 bg-background">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
-            
+
             {/* Interactive Hero Carousel Display Block */}
             <div className="flex flex-col">
               <Card className="overflow-hidden border-0 relative group">
@@ -258,14 +259,13 @@ export default function SingleProduct({ params }: PageProps) {
                   <Badge className="absolute top-6 left-6 bg-[#D4AF37] text-black tracking-widest uppercase text-[10px]">
                     Luxury
                   </Badge>
-                  
+
                   {/* Wishlist Button Overlay */}
                   <Button
                     size="icon"
                     variant="ghost"
-                    className={`absolute top-6 right-6 bg-white/90 hover:bg-white rounded-full transition-colors ${
-                      isInWishlist ? "text-red-500" : "text-neutral-600"
-                    }`}
+                    className={`absolute top-6 right-6 bg-white/90 hover:bg-white rounded-full transition-colors ${isInWishlist ? "text-red-500" : "text-neutral-600"
+                      }`}
                     onClick={() => setIsInWishlist(!isInWishlist)}
                   >
                     <Heart className={`h-5 w-5 ${isInWishlist ? "fill-current" : ""}`} />
@@ -301,9 +301,8 @@ export default function SingleProduct({ params }: PageProps) {
                   {product.images.map((img: string, i: number) => (
                     <Card
                       key={i}
-                      className={`overflow-hidden cursor-pointer border-2 transition-all rounded ${
-                        selectedImage === i ? "border-[#D4AF37]" : "border-border hover:border-[#D4AF37]/50"
-                      }`}
+                      className={`overflow-hidden cursor-pointer border-2 transition-all rounded ${selectedImage === i ? "border-[#D4AF37]" : "border-border hover:border-[#D4AF37]/50"
+                        }`}
                       onClick={() => setSelectedImage(i)}
                     >
                       <div className="aspect-square bg-muted">
@@ -349,11 +348,10 @@ export default function SingleProduct({ params }: PageProps) {
                     <button
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
-                      className={`relative w-7 h-7 rounded-full border border-black/10 transition-all ${
-                        selectedColor === color.name
+                      className={`relative w-7 h-7 rounded-full border border-black/10 transition-all ${selectedColor === color.name
                           ? "ring-2 ring-offset-2 ring-[#D4AF37] scale-105"
                           : "hover:scale-105"
-                      }`}
+                        }`}
                       style={{ backgroundColor: color.hex }}
                       title={color.name}
                     >
@@ -376,11 +374,10 @@ export default function SingleProduct({ params }: PageProps) {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`flex-1 border text-xs py-2.5 tracking-wider font-medium uppercase transition-all ${
-                        selectedSize === size
+                      className={`flex-1 border text-xs py-2.5 tracking-wider font-medium uppercase transition-all ${selectedSize === size
                           ? "border-foreground bg-foreground text-background"
                           : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
-                      }`}
+                        }`}
                     >
                       {size}
                     </button>
@@ -492,9 +489,8 @@ export default function SingleProduct({ params }: PageProps) {
                           {[...Array(5)].map((_, idx) => (
                             <Star
                               key={idx}
-                              className={`h-3 w-3 ${
-                                idx < review.rating ? "fill-[#D4AF37] text-[#D4AF37]" : "fill-neutral-200 text-neutral-200"
-                              }`}
+                              className={`h-3 w-3 ${idx < review.rating ? "fill-[#D4AF37] text-[#D4AF37]" : "fill-neutral-200 text-neutral-200"
+                                }`}
                             />
                           ))}
                         </div>
@@ -510,9 +506,9 @@ export default function SingleProduct({ params }: PageProps) {
           </div>
 
           {/* Related Products Carousel Injection */}
-          <RelatedProducts 
-            currentCategory={product.mainCategory || "womens"} 
-            currentProductId={product.id} 
+          <RelatedProducts
+            currentCategory={product.mainCategory || "womens"}
+            currentProductId={product.id}
           />
 
         </div>

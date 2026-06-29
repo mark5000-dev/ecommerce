@@ -7,6 +7,8 @@ import { ImageWithFallback } from "@/components/ui/imageWithFallback";
 import { ProductCard } from "@/features/productCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
+import { api } from "@/lib/api";
+import type { Product } from "@/model";
 
 
 
@@ -214,6 +216,24 @@ const ProductGrid: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadShowcase() {
+      try {
+        setIsLoading(true);
+        const data = await api.getProducts({ limit: 8 });
+        const list = Array.isArray(data) ? data : data.products || [];
+        setProducts(list);
+      } catch (err) {
+        console.error("Failed to load showcase products:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadShowcase();
+  }, []);
 
   // Monitor scroll positioning to dynamically reveal or hide control buttons
   const updateScrollButtons = () => {
@@ -317,7 +337,9 @@ const ProductGrid: React.FC = () => {
               }
             `}</style>
 
-            {showcaseProducts.map((product) => (
+            {isLoading ? (
+              <div className="py-12 text-center text-muted-foreground w-full">Curating showcase...</div>
+            ) : products.map((product) => (
               <div 
                 key={product.id} 
                 className="w-[280px] sm:w-[320px] shrink-0 snap-start"

@@ -16,6 +16,7 @@ import {
 import { ItemsGrid } from "@/features/itemsGrid";
 import { ProductCard } from "@/features/productCard";
 import type { Product } from "@/model";
+import { api } from "@/lib/api";
 
 // Initializing default mock target item ID maps for demonstration context
 const DEFAULT_WISHLIST_IDS = [1, 2];
@@ -25,24 +26,28 @@ export default function WishlistPage() {
   const [wishlistIds, setWishlistIds] = useState<number[]>(DEFAULT_WISHLIST_IDS);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Read inventory data directly on component hydration
+  // Read inventory and wishlist data directly from Express backend API
   useEffect(() => {
-    async function loadInventoryData() {
+    async function loadData() {
       try {
         setLoading(true);
-        const response = await fetch("/sample_data.json");
-        if (!response.ok) throw new Error("Could not populate inventory lookup files.");
-        
-        const data = await response.json();
-        const productsList = Array.isArray(data) ? data : data.products || [];
+        // Fetch all products
+        const productsData = await api.getProducts({ limit: 100 });
+        const productsList = Array.isArray(productsData) ? productsData : productsData.products || [];
         setAllProducts(productsList);
+
+        // Fetch wishlist items
+        const wishlistData = await api.getWishlist();
+        const wishlistItemsList = wishlistData.items || [];
+        const ids = wishlistItemsList.map((item: any) => Number(item.productId));
+        setWishlistIds(ids);
       } catch (error) {
-        console.error("Failure running internal inventory sync matrix:", error);
+        console.error("Failure running backend inventory and wishlist sync:", error);
       } finally {
         setLoading(false);
       }
     }
-    loadInventoryData();
+    loadData();
   }, []);
 
   // Compute products list intersection mapping
@@ -55,8 +60,13 @@ export default function WishlistPage() {
     alert("Share link copied! Your curated luxury capsule lookbook is ready to send.");
   };
 
-  const clearAllWishlistItems = () => {
-    setWishlistIds([]);
+  const clearAllWishlistItems = async () => {
+    try {
+      await Promise.all(wishlistIds.map(id => api.deleteWishlistItem(id)));
+      setWishlistIds([]);
+    } catch (err) {
+      console.error("Failed to clear wishlist items on backend:", err);
+    }
   };
 
   if (loading) {

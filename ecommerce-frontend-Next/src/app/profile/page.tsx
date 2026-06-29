@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { api } from "@/lib/api";
 import { ImageWithFallback } from "@/components/ui/imageWithFallback";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -122,8 +123,87 @@ export default function ProfilePage() {
   const [smsNotifications, setSmsNotifications] = useState(false);
   const [promotions, setPromotions] = useState(true);
   
-  // Hydrated state replacement from prior useAppSelector reference hooks
-  const [wishlistItems] = useState(initialWishlistMock);
+  const [user, setUser] = useState<any>({
+    firstName: "Alexandra",
+    lastName: "Pierce",
+    email: "alex@example.com",
+    phone: "+1 (555) 123-4567",
+    dateOfBirth: "1990-06-14",
+    language: "English",
+    memberSince: "2023-10-02",
+    loyaltyTier: "Gold",
+    loyaltyPoints: 50000,
+  });
+  const [addresses, setAddresses] = useState<any[]>(savedAddresses);
+  const [paymentMethodsList, setPaymentMethodsList] = useState<any[]>(paymentMethods);
+  const [wishlistItems, setWishlistItems] = useState<any[]>([]);
+  const [ordersList, setOrdersList] = useState<any[]>(orderHistory);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadProfileData() {
+      try {
+        setIsLoading(true);
+        // Load Profile
+        const profileData = await api.getProfile();
+        if (profileData && profileData.user) {
+          setUser(profileData.user);
+        }
+
+        // Load Addresses
+        const addressData = await api.getAddresses().catch(() => []);
+        if (Array.isArray(addressData) && addressData.length > 0) {
+          setAddresses(addressData);
+        }
+
+        // Load Payment Methods
+        const paymentData = await api.getPaymentMethods().catch(() => []);
+        if (Array.isArray(paymentData) && paymentData.length > 0) {
+          setPaymentMethodsList(paymentData);
+        }
+
+        // Load Orders
+        const ordersData = await api.getOrders().catch(() => ({ orders: [] }));
+        const fetchedOrders = ordersData.orders || [];
+        if (fetchedOrders.length > 0) {
+          const formattedOrders = fetchedOrders.map((ord: any) => ({
+            id: ord.orderId,
+            date: new Date(ord.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+            status: ord.status,
+            total: ord.total,
+            items: 1,
+            image: "https://images.unsplash.com/photo-1567777301743-3b7ef158aadf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+          }));
+          setOrdersList(formattedOrders);
+        }
+
+        // Load Wishlist and resolve product details
+        const productsData = await api.getProducts({ limit: 100 });
+        const productsList = Array.isArray(productsData) ? productsData : productsData.products || [];
+
+        const wishlistRes = await api.getWishlist();
+        const wishlistRows = wishlistRes.items || [];
+
+        const resolvedWishlist = wishlistRows.map((item: any) => {
+          const product = productsList.find((p: any) => p.id === Number(item.productId));
+          return {
+            id: item.id,
+            productId: item.productId,
+            name: product?.name || "Bespoke Luxury Item",
+            price: product?.price || 1000,
+            image: product?.image || "https://images.unsplash.com/photo-1567777301743-3b7ef158aadf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            inStock: product?.inStock !== false,
+          };
+        });
+        setWishlistItems(resolvedWishlist);
+      } catch (error) {
+        console.error("Failed to load profile details from backend:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadProfileData();
+  }, []);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -160,22 +240,22 @@ export default function ProfilePage() {
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
               <Avatar className="h-24 w-24 border-4 border-[#D4AF37]">
                 <AvatarFallback className="bg-[#D4AF37] text-black text-2xl font-serif">
-                  AP
+                  {(user.firstName?.[0] || "") + (user.lastName?.[0] || "")}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
                 <h1 className="font-serif text-[2.5rem] md:text-[3rem] mb-2 text-background">
-                  Alexandra Pierce
+                  {user.firstName} {user.lastName}
                 </h1>
                 <p className="text-background/80 mb-4 font-light text-sm">
-                  Member since October 2023 • Loyalty: Gold Tier
+                  Member since {user.memberSince || "October 2023"} • Loyalty: {user.loyaltyTier || "Bronze"} Tier
                 </p>
                 <div className="flex gap-3">
                   <Badge className="bg-[#D4AF37] text-black hover:bg-[#C5A028] text-[10px] tracking-wider uppercase font-semibold rounded-none">
-                    Gold Member
+                    {user.loyaltyTier || "Bronze"} Member
                   </Badge>
                   <Badge variant="outline" className="border-background/20 text-background text-[10px] tracking-wider uppercase font-medium rounded-none">
-                    50,000+ Points
+                    {(user.loyaltyPoints || 0).toLocaleString()} Points
                   </Badge>
                 </div>
               </div>
@@ -244,8 +324,8 @@ export default function ProfilePage() {
                       <CardTitle className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground">Total Orders</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-serif mb-1 text-foreground">24</div>
-                      <p className="text-xs text-muted-foreground font-light">3 orders processed this month</p>
+                      <div className="text-3xl font-serif mb-1 text-foreground">{ordersList.length}</div>
+                      <p className="text-xs text-muted-foreground font-light">Processed orders ledger</p>
                     </CardContent>
                   </Card>
                   
@@ -282,7 +362,7 @@ export default function ProfilePage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {orderHistory.slice(0, 3).map((order) => (
+                      {ordersList.slice(0, 3).map((order) => (
                         <div key={order.id} className="flex items-center gap-4 p-4 border border-border rounded-none">
                           <div className="w-16 h-16 bg-muted overflow-hidden flex-shrink-0">
                             <ImageWithFallback
@@ -323,19 +403,19 @@ export default function ProfilePage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <Label className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1 block font-medium">Email Address</Label>
-                        <p className="text-sm text-foreground">alexandra.pierce@email.com</p>
+                        <p className="text-sm text-foreground">{user.email}</p>
                       </div>
                       <div>
                         <Label className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1 block font-medium">Phone Network</Label>
-                        <p className="text-sm text-foreground">+1 (555) 123-4567</p>
+                        <p className="text-sm text-foreground">{user.phone || "Not set"}</p>
                       </div>
                       <div>
                         <Label className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1 block font-medium">Date of Birth</Label>
-                        <p className="text-sm text-foreground">March 15, 1990</p>
+                        <p className="text-sm text-foreground">{user.dateOfBirth || "Not set"}</p>
                       </div>
                       <div>
                         <Label className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1 block font-medium">Preferred Locales</Label>
-                        <p className="text-sm text-foreground">English (US)</p>
+                        <p className="text-sm text-foreground">{user.language || "English"}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -362,7 +442,7 @@ export default function ProfilePage() {
                   </Select>
                 </div>
 
-                {orderHistory.map((order) => (
+                {ordersList.map((order) => (
                   <Card key={order.id} className="border-border rounded-none shadow-none">
                     <CardHeader>
                       <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -538,7 +618,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  {savedAddresses.map((address) => (
+                  {addresses.map((address) => (
                     <Card key={address.id} className="border-border rounded-none shadow-none relative bg-background">
                       {address.isDefault && (
                         <Badge className="absolute top-4 right-4 bg-[#D4AF37] text-black hover:bg-[#C5A028] text-[9px] uppercase font-semibold tracking-wider rounded-none">
@@ -630,7 +710,7 @@ export default function ProfilePage() {
                 </Alert>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  {paymentMethods.map((method) => (
+                  {paymentMethodsList.map((method) => (
                     <Card key={method.id} className="border-border rounded-none shadow-none relative bg-background">
                       {method.isDefault && (
                         <Badge className="absolute top-4 right-4 bg-[#D4AF37] text-black hover:bg-[#C5A028] text-[9px] uppercase font-semibold tracking-wider rounded-none">
