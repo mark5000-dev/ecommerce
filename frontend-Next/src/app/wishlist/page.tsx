@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
 import { Heart, ShoppingBag, Share2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,60 +16,43 @@ import {
 import { ItemsGrid } from "@/features/itemsGrid";
 import { ProductCard } from "@/features/productCard";
 import type { Product } from "@/model";
-import { api } from "@/lib/api";
-
-// Initializing default mock target item ID maps for demonstration context
-const DEFAULT_WISHLIST_IDS = [1, 2];
+import { useProductsQuery } from "@/hooks/useProducts";
+import { useWishlistQuery, useDeleteWishlistItemMutation } from "@/hooks/useWishlist";
 
 export default function WishlistPage() {
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [wishlistIds, setWishlistIds] = useState<number[]>(DEFAULT_WISHLIST_IDS);
-  const [loading, setLoading] = useState<boolean>(true);
+  // Query Stream Sync Hook Interfaces
+  const { data: wishlistItems = [], isLoading: wishlistLoading } = useWishlistQuery();
+  const { data: productsData, isLoading: productsLoading } = useProductsQuery({ limit: 100 });
 
-  // Read inventory and wishlist data directly from Express backend API
-  useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-        // Fetch all products
-        const productsData = await api.getProducts({ limit: 100 });
-        const productsList = Array.isArray(productsData) ? productsData : productsData.products || [];
-        setAllProducts(productsList);
+  // Destruct mutation actions cleanly
+  const deleteWishlistItemMutation = useDeleteWishlistItemMutation();
 
-        // Fetch wishlist items
-        const wishlistData = await api.getWishlist();
-        const wishlistItemsList = wishlistData.items || [];
-        const ids = wishlistItemsList.map((item: any) => Number(item.productId));
-        setWishlistIds(ids);
-      } catch (error) {
-        console.error("Failure running backend inventory and wishlist sync:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadData();
-  }, []);
+  // Extract all loaded core product entries from API query wrappers
+  const allProducts: Product[] = useMemo(() => {
+    if (!productsData) return [];
+    return Array.isArray(productsData) ? productsData : productsData.products || [];
+  }, [productsData]);
 
-  // Compute products list intersection mapping
+  // Compute product payload intersections using tracking maps
   const wishlistProducts = useMemo(() => {
-    const targetSet = new Set(wishlistIds);
+    const targetSet = new Set(wishlistItems.map((item: any) => Number(item.productId)));
     return allProducts.filter((product) => targetSet.has(product.id));
-  }, [allProducts, wishlistIds]);
+  }, [allProducts, wishlistItems]);
 
   const handleShare = () => {
     alert("Share link copied! Your curated luxury capsule lookbook is ready to send.");
   };
 
-  const clearAllWishlistItems = async () => {
-    try {
-      await Promise.all(wishlistIds.map(id => api.deleteWishlistItem(id)));
-      setWishlistIds([]);
-    } catch (err) {
-      console.error("Failed to clear wishlist items on backend:", err);
-    }
+  const clearAllWishlistItems = () => {
+    // Sequentially dispatch parallel cache updates natively across current saved array states
+    wishlistItems.forEach((item: any) => {
+      deleteWishlistItemMutation.mutate({ productId: item.productId });
+    });
   };
 
-  if (loading) {
+  const isLoading = wishlistLoading || productsLoading;
+
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <p className="font-serif tracking-widest text-muted-foreground animate-pulse">
@@ -112,11 +95,11 @@ export default function WishlistPage() {
                   My Wishlist
                 </h1>
                 <p className="text-muted-foreground text-sm font-light">
-                  {wishlistIds.length} {wishlistIds.length === 1 ? "item" : "items"} saved inside temporary tracking indexes
+                  {wishlistItems.length} {wishlistItems.length === 1 ? "item" : "items"} saved inside temporary tracking indexes
                 </p>
               </div>
-              
-              {wishlistIds.length > 0 && (
+
+              {wishlistItems.length > 0 && (
                 <div className="flex items-center gap-3">
                   <Button
                     variant="outline"
@@ -126,21 +109,22 @@ export default function WishlistPage() {
                     <Share2 className="h-4 w-4 mr-2 text-[#D4AF37]" />
                     Share Wishlist
                   </Button>
-                  
+
                   <Button
                     variant="ghost"
                     onClick={clearAllWishlistItems}
+                    disabled={deleteWishlistItemMutation.isPending}
                     className="rounded-none text-xs uppercase tracking-wider font-medium text-red-600 hover:text-red-700 hover:bg-red-50/50 h-10 px-4"
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
-                    Clear All
+                    {deleteWishlistItemMutation.isPending ? "Clearing..." : "Clear All"}
                   </Button>
                 </div>
               )}
             </div>
 
             {/* Content Segment Switchboard Matrix */}
-            {wishlistIds.length === 0 ? (
+            {wishlistItems.length === 0 ? (
               <Card className="text-center py-20 border-border rounded-none bg-card shadow-none">
                 <CardContent className="space-y-4 max-w-md mx-auto">
                   <div className="flex justify-center">
@@ -176,7 +160,7 @@ export default function WishlistPage() {
             )}
 
             {/* Informational Core Pillars Section */}
-            {wishlistIds.length > 0 && (
+            {wishlistItems.length > 0 && (
               <div className="mt-20 grid md:grid-cols-3 gap-8 border-t border-border pt-16">
                 <Card className="border-border bg-card/40 rounded-none shadow-none p-6 text-center">
                   <CardContent className="p-0">

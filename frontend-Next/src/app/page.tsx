@@ -1,72 +1,17 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Heart, ShoppingBag, Eye } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Newsletter } from "@/features/newsletter";
 import { ImageWithFallback } from "@/components/ui/imageWithFallback";
 import { ProductCard } from "@/features/productCard";
+import { CategoryCard } from "@/features/categoryCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
-import { api } from "@/lib/api";
-import type { Product } from "@/model";
+import type { Product, Category } from "@/model";
+import { useProductsQuery } from "../hooks/useProducts";
+import { useCategories } from "../hooks/useCategories";
 
-
-
-// --- DUMMY DATA STRUCTURES ---
-const categories = [
-  {
-    id: "1",
-    name: "Women's Collection",
-    image: "https://images.unsplash.com/photo-1610209740880-6ecc4b20ea78?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    description: "Elegant dresses, sophisticated separates",
-    slug: "womens-collection"
-  },
-  {
-    id: "2",
-    name: "Men's Collection",
-    image: "https://images.unsplash.com/photo-1553315164-49bb0615e0c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    description: "Tailored suits, refined essentials",
-    slug: "mens-collection"
-  },
-  {
-    id: "3",
-    name: "Accessories",
-    image: "https://images.unsplash.com/photo-1569388330292-79cc1ec67270?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    description: "Curated pieces to complete your look",
-    slug: "accessories"
-  },
-];
-
-const showcaseProducts = [
-  {
-    id: "p1",
-    name: "Silk Slip Dress",
-    price: "$340",
-    category: "Women's",
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
-  },
-  {
-    id: "p2",
-    name: "Tailored Wool Blazer",
-    price: "$580",
-    category: "Men's",
-    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
-  },
-  {
-    id: "p3",
-    name: "Classic Leather Tote",
-    price: "$420",
-    category: "Accessories",
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
-  },
-  {
-    id: "p4",
-    name: "Gold Chain Monograph Cuff",
-    price: "$210",
-    category: "Accessories",
-    image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
-  }
-];
 
 // --- id based navbar
 const SectionSubNav: React.FC = () => {
@@ -161,87 +106,18 @@ const Hero: React.FC = () => {
   );
 };
 
-
-const CategoryShowcase: React.FC = () => {
-  return (
-    <section id="categories" className="py-20 bg-background">
-      <div className="container mx-auto px-4 lg:px-8">
-
-        {/* Module Title Deck */}
-        <div className="text-center mb-16">
-          <h2 className="font-serif text-[2.5rem] md:text-[3.5rem] mb-4 text-foreground">
-            Shop by Category
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-light">
-            Explore our carefully curated collections designed for the modern connoisseur
-          </p>
-          <Link
-            href="/categories"
-            className="text-[#D4AF37] hover:text-[#C5A028] font-medium inline-flex items-center gap-1 shrink-0 group "
-          >
-            View All Categories
-            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-
-
-        {/* Dynamic Card Assembly Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
-          {categories.map((category) => (
-            <Link
-              href={`/categories/${category.slug}`}
-              key={category.id}
-              className="group relative h-[450px] overflow-hidden rounded-lg shadow-md block"
-            >
-              <img
-                src={category.image}
-                alt={category.name}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-              />
-              {/* Linear Matte Shade */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-              {/* Core Anchored Text Metrics */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                <h3 className="font-serif text-white text-2xl mb-1 flex items-center gap-2">
-                  {category.name}
-                  <ArrowRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-[#D4AF37]" />
-                </h3>
-                <p className="text-white/80 text-sm font-light opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {category.description}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
 const ProductGrid: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadShowcase() {
-      try {
-        setIsLoading(true);
-        const data = await api.getProducts({ limit: 8 });
-        const list = Array.isArray(data) ? data : data.products || [];
-        setProducts(list);
-      } catch (err) {
-        console.error("Failed to load showcase products:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadShowcase();
-  }, []);
+  // TanStack Query handles states, lifecycle, and caching automatically
+  const { data, isLoading, isError } = useProductsQuery({ limit: 10 });
+
+  // Safely extract products array from your unified API response object
+  const products: Product[] = Array.isArray(data)
+    ? data
+    : data?.products || [];
 
   // Monitor scroll positioning to dynamically reveal or hide control buttons
   const updateScrollButtons = () => {
@@ -264,7 +140,7 @@ const ProductGrid: React.FC = () => {
       updateScrollButtons();
     }
     return () => container?.removeEventListener("scroll", updateScrollButtons);
-  }, []);
+  }, [products]); // Re-evaluate if products finish loading or change
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
@@ -347,14 +223,20 @@ const ProductGrid: React.FC = () => {
 
             {isLoading ? (
               <div className="py-12 text-center text-muted-foreground w-full">Curating showcase...</div>
-            ) : products.map((product) => (
-              <div
-                key={product.id}
-                className="w-[280px] sm:w-[320px] shrink-0 snap-start"
-              >
-                <ProductCard product={product} />
-              </div>
-            ))}
+            ) : isError ? (
+              <div className="py-12 text-center text-destructive w-full">Failed to load showcase products.</div>
+            ) : products.length === 0 ? (
+              <div className="py-12 text-center text-muted-foreground w-full">No products found.</div>
+            ) : (
+              products.map((product) => (
+                <div
+                  key={product.id}
+                  className="w-[280px] sm:w-[320px] shrink-0 snap-start"
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -362,6 +244,9 @@ const ProductGrid: React.FC = () => {
     </section>
   );
 };
+
+
+
 
 
 // -- About us
@@ -426,6 +311,62 @@ export const AboutSection = () => {
           </div>
 
         </div>
+      </div>
+    </section>
+  );
+};
+
+const CategoryShowcase: React.FC = () => {
+  // Leverage TanStack Query hook for direct cache and network management
+  const { data, isLoading, isError } = useCategories();
+
+  // Safely extract the data fallback assuming it can arrive wrapped or as an array
+  const categories: Category[] = Array.isArray(data)
+    ? data
+    : data?.categories || [];
+
+  return (
+    <section id="categories" className="py-20 bg-background">
+      <div className="container mx-auto px-4 lg:px-8">
+
+        {/* Module Title Deck */}
+        <div className="text-center mb-16">
+          <h2 className="font-serif text-[2.5rem] md:text-[3.5rem] mb-4 text-foreground">
+            Shop by Category
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-light">
+            Explore our carefully curated collections designed for the modern connoisseur
+          </p>
+          <Link
+            href="/categories"
+            className="text-[#D4AF37] hover:text-[#C5A028] font-medium inline-flex items-center gap-1 shrink-0 group"
+          >
+            View All Categories
+            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+
+        {/* Dynamic Card Assembly Grid */}
+        {isLoading ? (
+          <div className="py-20 text-center text-muted-foreground">
+            Curating collections...
+          </div>
+        ) : isError ? (
+          <div className="py-20 text-center text-destructive">
+            Failed to load categories. Please try again later.
+          </div>
+        ) : categories.length === 0 ? (
+          <div className="py-20 text-center text-muted-foreground">
+            No categories available at the moment.
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-8">
+            {categories.map((category) => (
+              <CategoryCard key={category.categoryId} category={category} />
+            ))}
+          </div>
+        )}
+
       </div>
     </section>
   );

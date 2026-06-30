@@ -5,12 +5,13 @@ import { Header } from "../features/header";
 import { Footer } from "../features/footer";
 import { cn } from "@/lib/utils";
 import { title } from "process";
-import {type Metadata } from "next";
+import { type Metadata } from "next";
+import { Providers } from "./provider";
 
 
-const playfairDisplayHeading = Playfair_Display({subsets:['latin'],variable:'--font-heading'});
+const playfairDisplayHeading = Playfair_Display({ subsets: ['latin'], variable: '--font-heading' });
 
-const notoSans = Noto_Sans({subsets:['latin'],variable:'--font-sans'});
+const notoSans = Noto_Sans({ subsets: ['latin'], variable: '--font-sans' });
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,9 +26,9 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title : "Luxe Fashions",
-  description : "Luxe Fashions is a premier online destination for fashion enthusiasts, offering a curated selection of high-quality clothing, accessories, and lifestyle products. Our mission is to provide our customers with the latest trends and timeless pieces that elevate their personal style.",
-  icons :{ icon: "/ico.ico"},
+  title: "Luxe Fashions",
+  description: "Luxe Fashions is a premier online destination for fashion enthusiasts, offering a curated selection of high-quality clothing, accessories, and lifestyle products. Our mission is to provide our customers with the latest trends and timeless pieces that elevate their personal style.",
+  icons: { icon: "/ico.ico" },
 }
 
 
@@ -36,9 +37,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
     <html lang="en" className={cn(poppins.variable, playfair.variable, "font-sans", notoSans.variable, playfairDisplayHeading.variable)}>
       <body>
-      <Header />
-      {children}
-      <Footer />
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   )

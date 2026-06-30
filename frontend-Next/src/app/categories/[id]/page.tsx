@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { Grid, List, ChevronDown } from "lucide-react";
 import { PageHero } from "@/features/pageHero";
 import { ItemsGrid } from "@/features/itemsGrid";
 import { ProductCard } from "@/features/productCard";
 import { Newsletter } from "@/features/newsletter";
+import { useCategoryProducts } from "@/hooks/useCategories"; // Adjust import path as needed
 import type { Product, Category } from "@/model";
-import { api } from "@/lib/api";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -17,40 +17,22 @@ export default function SingleCategoryPage({ params }: PageProps) {
   const resolvedParams = React.use(params);
   const slug = resolvedParams.id; // Next.js dynamic route segment matching folder [id]
 
-  const [category, setCategory] = useState<Category | null>(null);
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  // TanStack Query replaces local allProducts, category, and loading states
+  const { data, isLoading, isError } = useCategoryProducts({ categoryId: slug });
+
+  // Safe data extraction variables
+  const category: Category | null = data?.category || null;
+  const allProducts: Product[] = data?.products || [];
+
   const [selectedSubcategory, setSelectedSubcategory] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortOption, setSortOption] = useState<string>("featured");
-  const [loading, setLoading] = useState(true);
-
-  // Synchronized Multi-Fetch Data Pipeline
-  useEffect(() => {
-    async function loadCategoryAndProducts() {
-      try {
-        setLoading(true);
-        const data = await api.getCategoryProducts(slug);
-        
-        if (data && data.category) {
-          setCategory(data.category);
-          setAllProducts(data.products || []);
-        }
-      } catch (error) {
-        console.error("Migration runtime exception loading category products:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadCategoryAndProducts();
-  }, [slug]);
 
   // Compute calculated values across subcategories navigation indices
   const calculatedSubcategories = useMemo(() => {
     if (!category) return [{ id: "all", name: "All Items" }];
-    
-    // Fallback safe collection extraction mapping arrays
-    const rawSubs = (category as any).subcategories || [];
+
+    const rawSubs = category.subcategories || [];
     return [{ id: "all", name: "All Items" }, ...rawSubs];
   }, [category]);
 
@@ -84,19 +66,23 @@ export default function SingleCategoryPage({ params }: PageProps) {
     }
   }, [allProducts, selectedSubcategory, sortOption]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="font-serif tracking-widest text-muted-foreground animate-pulse">Syncing dynamic category layouts...</p>
+        <p className="font-serif tracking-widest text-muted-foreground animate-pulse">
+          Syncing dynamic category layouts...
+        </p>
       </div>
     );
   }
 
-  if (!category) {
+  if (isError || !category) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-12 bg-background text-center">
         <h2 className="font-serif text-2xl mb-2 text-foreground">Collection Profile Missing</h2>
-        <p className="text-muted-foreground text-sm max-w-sm">The specific context index you requested is not indexed inside our database profiles.</p>
+        <p className="text-muted-foreground text-sm max-w-sm">
+          The specific context index you requested is not indexed inside our database profiles.
+        </p>
       </div>
     );
   }
@@ -122,11 +108,10 @@ export default function SingleCategoryPage({ params }: PageProps) {
               <button
                 key={sub.id}
                 onClick={() => setSelectedSubcategory(sub.id)}
-                className={`text-xs uppercase tracking-widest font-medium whitespace-nowrap transition-all duration-200 border-b-2 pb-1.5 -mb-4 ${
-                  selectedSubcategory === sub.id
+                className={`text-xs uppercase tracking-widest font-medium whitespace-nowrap transition-all duration-200 border-b-2 pb-1.5 -mb-4 ${selectedSubcategory === sub.id
                     ? "border-[#D4AF37] text-foreground font-semibold"
                     : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
+                  }`}
               >
                 {sub.name}
               </button>
@@ -138,7 +123,7 @@ export default function SingleCategoryPage({ params }: PageProps) {
       {/* Unified Toolbar and Presentational Items Context Grid */}
       <section className="py-12 bg-background flex-1">
         <div className="container mx-auto px-4 lg:px-8">
-          
+
           {/* Integrated Multi-Action Control Layout Toolbar Block */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border pb-6 mb-8">
             <span className="text-xs uppercase tracking-widest font-medium text-muted-foreground">
@@ -191,7 +176,7 @@ export default function SingleCategoryPage({ params }: PageProps) {
               items={processedProducts}
               viewMode={viewMode}
               gridCols={{ default: 1, sm: 2, lg: 3 }}
-              showLoadMore={false} 
+              showLoadMore={false}
               renderItem={(product: Product) => (
                 <ProductCard key={product.id} product={product} />
               )}

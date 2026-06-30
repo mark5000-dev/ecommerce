@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { PageHero } from "@/features/pageHero";
 import { ItemsGrid } from "@/features/itemsGrid";
 import { ProductCard } from "@/features/productCard";
+import { useProductsQuery } from "@/hooks/useProducts"; // Adjust import path as needed
 import type { Product } from "@/model";
-import { api } from "@/lib/api";
 
-const subcategories = [
+const maincategories = [
   { id: "womens-collection", label: "Women" },
   { id: "mens-collection", label: "Men" },
   { id: "kids-collection", label: "Kids" },
@@ -19,30 +19,21 @@ const subcategories = [
 
 export default function ProductsPage() {
   const router = useRouter();
-  const [products, setProducts] = useState<Product[]>([]);
+
+  // TanStack Query handles local loading, caching, and background sync instantly
+  const { data, isLoading, isError } = useProductsQuery({ limit: 100 });
+
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortOption, setSortOption] = useState<string>("featured");
   const [visibleCount, setVisibleCount] = useState<number>(20);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Hydrate data directly from the Express backend API
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const data = await api.getProducts({ limit: 100 });
-        // Handle both raw arrays or objects containing a products field
-        const fallbackArray = Array.isArray(data) ? data : data.products || [];
-        setProducts(fallbackArray);
-      } catch (error) {
-        console.error("Error reading backend products:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadData();
-  }, []);
+  // Safely extract the fallback array from unified API structure
+  const products: Product[] = useMemo(() => {
+    if (!data) return [];
+    return Array.isArray(data) ? data : data.products || [];
+  }, [data]);
 
-  // Compute sorting workflows locally prior to API integration
+  // Compute sorting workflows locally using the raw data cache stream
   const processedProducts = useMemo(() => {
     const items = [...products];
     switch (sortOption) {
@@ -63,7 +54,9 @@ export default function ProductsPage() {
   };
 
   // Paginated array block passed downward to your item template handler
-  const itemsToRender = processedProducts.slice(0, visibleCount);
+  const itemsToRender = useMemo(() => {
+    return processedProducts.slice(0, visibleCount);
+  }, [processedProducts, visibleCount]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -81,7 +74,7 @@ export default function ProductsPage() {
 
             {/* Left: Filter Buttons */}
             <div className="flex flex-wrap gap-2">
-              {subcategories.map((sub) => (
+              {maincategories.map((sub) => (
                 <button
                   key={sub.id}
                   onClick={() => handleSubcategoryClick(sub.id)}
@@ -141,6 +134,10 @@ export default function ProductsPage() {
           {isLoading ? (
             <div className="text-center py-24 text-muted-foreground font-serif tracking-wide">
               Curating collection view...
+            </div>
+          ) : isError ? (
+            <div className="text-center py-24 text-destructive font-serif tracking-wide">
+              Critical context synchronization error. Failed to load product catalogue.
             </div>
           ) : itemsToRender.length === 0 ? (
             <div className="text-center py-24 text-muted-foreground font-serif tracking-wide">

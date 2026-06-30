@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useMemo } from "react";
-import { ChevronLeft, ChevronRight, Heart, Star, Truck, RotateCcw, Shield, Minus, Plus, Share2, ArrowRight } from "lucide-react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Heart, Star, Truck, RotateCcw, Shield, Minus, Plus, Share2 } from "lucide-react";
 import { ImageWithFallback } from "@/components/ui/imageWithFallback";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,29 +9,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { PageHero } from "@/features/pageHero";
-import { ProductCard } from "@/features/productCard"; // Ensure this import path is accurate for your setup
+import { ProductCard } from "@/features/productCard";
+import { useProductsQuery, useProductByIdQuery } from "@/hooks/useProducts";
+import { useCartMutation } from "@/hooks/useCart";
 import type { Product } from "@/model";
-import { api } from "@/lib/api";
-
-const oneOP: Product = {
-  id: 1,
-  name: "Cashmere Overcoat",
-  price: 2899,
-  stock: 8,
-  mainCategory: "womens",
-  image: "https://images.unsplash.com/photo-1567777301743-3b7ef158aadf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  description:
-    "Experience unparalleled luxury with this exquisite cashmere overcoat. Meticulously crafted from the finest 100% pure cashmere, this timeless piece combines supreme comfort with sophisticated elegance.",
-  images: [
-    "https://images.unsplash.com/photo-1567777301743-3b7ef158aadf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    "https://images.unsplash.com/photo-1670177257750-9b47927f68eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    "https://images.unsplash.com/photo-1722842529941-825976fc14f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  ],
-  comments: [
-    { id: 1, author: "Sarah M.", rating: 5, date: "2 days ago", comment: "Exceptional quality and craftsmanship." },
-    { id: 2, author: "James R.", rating: 5, date: "1 week ago", comment: "Luxury through and through." },
-  ],
-};
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -47,25 +28,13 @@ interface RelatedProductsProps {
 
 function RelatedProducts({ currentCategory, currentProductId }: RelatedProductsProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [products, setProducts] = useState<Product[]>([]);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
 
-  // Fetch catalog inventory to determine related options
-  useEffect(() => {
-    async function fetchRelated() {
-      try {
-        const data = await api.getProducts({ category: currentCategory, limit: 12 });
-        const list = Array.isArray(data) ? data : data.products || [];
-        setProducts(list);
-      } catch (err) {
-        console.error("Error reading product catalog for recommendations:", err);
-      }
-    }
-    fetchRelated();
-  }, [currentCategory, currentProductId]);
+  // TanStack Query simplifies data management natively here
+  const { data } = useProductsQuery({ category: currentCategory, limit: 12 });
+  const products: Product[] = Array.isArray(data) ? data : data?.products || [];
 
-  // Compute matched categorical selections safely handling mismatched ID type variations
   const filteredProducts = useMemo(() => {
     return products.filter(
       (p) =>
@@ -115,7 +84,6 @@ function RelatedProducts({ currentCategory, currentProductId }: RelatedProductsP
         </div>
       </div>
 
-      {/* Carousel Track Wrapper */}
       <div className="relative group/carousel">
         {showLeftArrow && (
           <button
@@ -144,7 +112,6 @@ function RelatedProducts({ currentCategory, currentProductId }: RelatedProductsP
           className="flex gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {/* Native scrollbar hide utility injection */}
           <style jsx global>{`
             div::-webkit-scrollbar {
               display: none;
@@ -169,60 +136,45 @@ export default function SingleProduct({ params }: PageProps) {
   const resolvedParams = React.use(params);
   const slug = resolvedParams.id;
 
-  const [product, setProduct] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  // Extract the true product identity from URL structure
+  const cleanId = useMemo(() => {
+    return slug?.split("-").pop() || "0";
+  }, [slug]);
+
+  // Unified Query Hook Implementation
+  const { data: product, isLoading, isError } = useProductByIdQuery({ id: cleanId });
+  const { mutate: addToCart, isPending: isAddingToCart } = useCartMutation();
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedColor, setSelectedColor] = useState("Black");
   const [isInWishlist, setIsInWishlist] = useState(false);
 
-  useEffect(() => {
-    async function loadProductDetail() {
-      try {
-        const idFromSlug = parseInt((slug?.split("-").pop() || "0"), 10);
-        const found = await api.getProductById(idFromSlug);
-        console.log("Found the product", found);
-
-        if (found) {
-          // If the database returns empty comments, merge mock reviews to keep premium visual styling
-          if (!found.comments || found.comments.length === 0) {
-            found.comments = oneOP.comments;
-          }
-          setProduct(found);
-        } else {
-          setProduct(oneOP);
-        }
-      } catch (err) {
-        console.log("Using dynamic layout fallback reference structure.", err);
-        setProduct(oneOP);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadProductDetail();
-  }, [slug]);
-
-  if (loading || !product) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="font-serif tracking-widest text-muted-foreground animate-pulse">Loading product matrix...</p>
-      </div>
-    );
-  }
-
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (!product?.images) return;
     setSelectedImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1));
   };
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (!product?.images) return;
     setSelectedImage((prev) => (prev === product.images.length - 1 ? 0 : prev + 1));
   };
 
   const handleQuantityChange = (delta: number) => {
     setQuantity((prev) => Math.max(1, prev + delta));
+  };
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    addToCart({
+      productId: product.id,
+      quantity,
+      color: selectedColor,
+      size: selectedSize,
+    });
   };
 
   const colorOptions = [
@@ -231,6 +183,25 @@ export default function SingleProduct({ params }: PageProps) {
     { name: "Charcoal", hex: "#36454f" },
     { name: "Camel", hex: "#C19A6B" },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <p className="font-serif tracking-widest text-muted-foreground animate-pulse">Loading product matrix...</p>
+      </div>
+    );
+  }
+
+  if (isError || !product) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-12 bg-background text-center">
+        <h2 className="font-serif text-2xl mb-2 text-foreground">Product Archive Missing</h2>
+        <p className="text-muted-foreground text-sm max-w-sm">
+          The item profile requested does not exist or could not be loaded.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -248,7 +219,7 @@ export default function SingleProduct({ params }: PageProps) {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
 
-            {/* Interactive Hero Carousel Display Block */}
+            {/* Interactive Hero Display Block */}
             <div className="flex flex-col">
               <Card className="overflow-hidden border-0 relative group">
                 <div className="relative aspect-[3/4] bg-muted w-full select-none">
@@ -261,18 +232,15 @@ export default function SingleProduct({ params }: PageProps) {
                     Luxury
                   </Badge>
 
-                  {/* Wishlist Button Overlay */}
                   <Button
                     size="icon"
                     variant="ghost"
-                    className={`absolute top-6 right-6 bg-white/90 hover:bg-white rounded-full transition-colors ${isInWishlist ? "text-red-500" : "text-neutral-600"
-                      }`}
+                    className={`absolute top-6 right-6 bg-white/90 hover:bg-white rounded-full transition-colors ${isInWishlist ? "text-red-500" : "text-neutral-600"}`}
                     onClick={() => setIsInWishlist(!isInWishlist)}
                   >
                     <Heart className={`h-5 w-5 ${isInWishlist ? "fill-current" : ""}`} />
                   </Button>
 
-                  {/* Left Carousel Arrow */}
                   {product.images && product.images.length > 1 && (
                     <>
                       <button
@@ -283,7 +251,6 @@ export default function SingleProduct({ params }: PageProps) {
                         <ChevronLeft className="h-5 w-5" />
                       </button>
 
-                      {/* Right Carousel Arrow */}
                       <button
                         onClick={handleNextImage}
                         className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2.5 rounded-full transition-all text-neutral-800 shadow-md md:opacity-0 md:group-hover:opacity-100 z-10"
@@ -296,18 +263,16 @@ export default function SingleProduct({ params }: PageProps) {
                 </div>
               </Card>
 
-              {/* Thumbnails list below slider */}
               {product.images && product.images.length > 1 && (
                 <div className="grid grid-cols-4 gap-4 mt-4">
                   {product.images.map((img: string, i: number) => (
                     <Card
                       key={i}
-                      className={`overflow-hidden cursor-pointer border-2 transition-all rounded ${selectedImage === i ? "border-[#D4AF37]" : "border-border hover:border-[#D4AF37]/50"
-                        }`}
+                      className={`overflow-hidden cursor-pointer border-2 transition-all rounded ${selectedImage === i ? "border-[#D4AF37]" : "border-border hover:border-[#D4AF37]/50"}`}
                       onClick={() => setSelectedImage(i)}
                     >
                       <div className="aspect-square bg-muted">
-                        <img src={img} alt={`Thumbnail preview selection matrix ${i + 1}`} className="w-full h-full object-cover" />
+                        <img src={img} alt={`Thumbnail preview selection ${i + 1}`} className="w-full h-full object-cover" />
                       </div>
                     </Card>
                   ))}
@@ -349,10 +314,7 @@ export default function SingleProduct({ params }: PageProps) {
                     <button
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
-                      className={`relative w-7 h-7 rounded-full border border-black/10 transition-all ${selectedColor === color.name
-                        ? "ring-2 ring-offset-2 ring-[#D4AF37] scale-105"
-                        : "hover:scale-105"
-                        }`}
+                      className={`relative w-7 h-7 rounded-full border border-black/10 transition-all ${selectedColor === color.name ? "ring-2 ring-offset-2 ring-[#D4AF37] scale-105" : "hover:scale-105"}`}
                       style={{ backgroundColor: color.hex }}
                       title={color.name}
                     >
@@ -367,7 +329,7 @@ export default function SingleProduct({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Size Selector Array */}
+              {/* Size Selector */}
               <div>
                 <span className="mb-3 block text-xs uppercase tracking-widest font-medium text-foreground">Size</span>
                 <div className="flex gap-2">
@@ -375,10 +337,7 @@ export default function SingleProduct({ params }: PageProps) {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`flex-1 border text-xs py-2.5 tracking-wider font-medium uppercase transition-all ${selectedSize === size
-                        ? "border-foreground bg-foreground text-background"
-                        : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
-                        }`}
+                      className={`flex-1 border text-xs py-2.5 tracking-wider font-medium uppercase transition-all ${selectedSize === size ? "border-foreground bg-foreground text-background" : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"}`}
                     >
                       {size}
                     </button>
@@ -424,9 +383,10 @@ export default function SingleProduct({ params }: PageProps) {
                 <Button
                   className="flex-1 bg-[#D4AF37] text-black hover:bg-[#C5A028] transition-all tracking-widest uppercase text-xs font-semibold h-12"
                   size="lg"
-                  onClick={() => console.log("Added package items locally inside context layer:", { id: product.id, quantity, size: selectedSize, color: selectedColor })}
+                  onClick={handleAddToCart}
+                  disabled={isAddingToCart}
                 >
-                  Add to Cart
+                  {isAddingToCart ? "Adding..." : "Add to Cart"}
                 </Button>
                 <Button
                   variant="outline"
@@ -490,8 +450,7 @@ export default function SingleProduct({ params }: PageProps) {
                           {[...Array(5)].map((_, idx) => (
                             <Star
                               key={idx}
-                              className={`h-3 w-3 ${idx < review.rating ? "fill-[#D4AF37] text-[#D4AF37]" : "fill-neutral-200 text-neutral-200"
-                                }`}
+                              className={`h-3 w-3 ${idx < review.rating ? "fill-[#D4AF37] text-[#D4AF37]" : "fill-neutral-200 text-neutral-200"}`}
                             />
                           ))}
                         </div>
@@ -506,7 +465,6 @@ export default function SingleProduct({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Related Products Carousel Injection */}
           <RelatedProducts
             currentCategory={product.mainCategory || "womens"}
             currentProductId={product.id}

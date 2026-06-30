@@ -1,3 +1,5 @@
+import axios, { AxiosRequestConfig } from "axios";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 let token: string | null = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -18,19 +20,16 @@ export const getToken = () => token;
 // Helper to auto-login if needed during development
 async function ensureAuthenticated() {
   if (token) return token;
-  
+
   try {
-    const res = await fetch(`${BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'alex@example.com', password: 'password123' })
+    const res = await axios.post(`${BASE_URL}/auth/login`, {
+      email: 'alex@example.com',
+      password: 'password123'
     });
-    if (res.ok) {
-      const data = await res.json();
-      if (data.token) {
-        setToken(data.token);
-        return data.token;
-      }
+
+    if (res.data?.token) {
+      setToken(res.data.token);
+      return res.data.token;
     }
   } catch (error) {
     console.error('Auto login failed:', error);
@@ -38,9 +37,9 @@ async function ensureAuthenticated() {
   return null;
 }
 
-async function request(path: string, options: RequestInit = {}) {
+async function request(path: string, options: AxiosRequestConfig = {}) {
   const isAuthRequired = path.startsWith('/users/') || path.startsWith('/wishlist') || path.startsWith('/cart');
-  
+
   const headers = {
     'Content-Type': 'application/json',
     ...(options.headers || {}),
@@ -53,36 +52,36 @@ async function request(path: string, options: RequestInit = {}) {
     }
   }
 
-  const res = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers,
-  });
-
-  if (!res.ok) {
-    const errData = await res.json().catch(() => ({}));
-    throw new Error(errData.message || `Request failed with status ${res.status}`);
+  try {
+    const response = await axios({
+      url: `${BASE_URL}${path}`,
+      ...options,
+      headers,
+    });
+    return response.data;
+  } catch (error: any) {
+    const errMsg = error.response?.data?.message || error.message || 'Request failed';
+    throw new Error(errMsg);
   }
-
-  return res.json();
 }
 
 export const api = {
   // Auth
-  login: async (email: string, password: string) => {
+  login: async ({ email, password }: { email: string; password: string }) => {
     const data = await request('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      data: { email, password },
     });
     if (data.token) {
       setToken(data.token);
     }
     return data;
   },
-  
-  register: async (userData: any) => {
+
+  register: async ({ userData }: { userData: any }) => {
     const data = await request('/auth/register', {
       method: 'POST',
-      body: JSON.stringify(userData),
+      data: userData,
     });
     if (data.token) {
       setToken(data.token);
@@ -106,32 +105,24 @@ export const api = {
     page?: number;
     limit?: number;
   } = {}) => {
-    const query = new URLSearchParams();
-    if (params.category) query.append('category', params.category);
-    if (params.subcategory) query.append('subcategory', params.subcategory);
-    if (params.search) query.append('search', params.search);
-    if (params.minPrice !== undefined) query.append('minPrice', String(params.minPrice));
-    if (params.maxPrice !== undefined) query.append('maxPrice', String(params.maxPrice));
-    if (params.sort) query.append('sort', params.sort);
-    if (params.page !== undefined) query.append('page', String(params.page));
-    if (params.limit !== undefined) query.append('limit', String(params.limit));
-
-    const queryString = query.toString();
-    return request(`/products${queryString ? `?${queryString}` : ''}`);
+    return request('/products', {
+      method: 'GET',
+      params,
+    });
   },
 
-  getProductById: async (id: number | string) => {
+  getProductById: async ({ id }: { id: number | string }) => {
     return request(`/products/${id}`);
   },
 
-  getProductReviews: async (id: number | string) => {
+  getProductReviews: async ({ id }: { id: number | string }) => {
     return request(`/products/${id}/reviews`);
   },
 
-  addProductReview: async (id: number | string, review: { author?: string; rating: number; comment: string }) => {
+  addProductReview: async ({ id, review }: { id: number | string; review: { author?: string; rating: number; comment: string } }) => {
     return request(`/products/${id}/reviews`, {
       method: 'POST',
-      body: JSON.stringify(review),
+      data: review,
     });
   },
 
@@ -140,12 +131,12 @@ export const api = {
     return request('/categories');
   },
 
-  getCategoryById: async (id: string) => {
-    return request(`/categories/${id}`);
+  getCategoryById: async ({ categoryId }: { categoryId: string }) => {
+    return request(`/categories/${categoryId}`);
   },
 
-  getCategoryProducts: async (id: string) => {
-    return request(`/categories/${id}/products`);
+  getCategoryProducts: async ({ categoryId, page = 1, limit = 10, sort }: { categoryId: string, page?: number, limit?: number, sort?: string }) => {
+    return request(`/categories/${categoryId}/products`, { params: { page, limit, sort } });
   },
 
   // User Profile
@@ -153,10 +144,10 @@ export const api = {
     return request('/users/me');
   },
 
-  updateProfile: async (profileData: any) => {
+  updateProfile: async ({ profileData }: { profileData: any }) => {
     return request('/users/me', {
       method: 'PUT',
-      body: JSON.stringify(profileData),
+      data: profileData,
     });
   },
 
@@ -164,21 +155,21 @@ export const api = {
     return request('/users/me/addresses');
   },
 
-  addAddress: async (address: any) => {
+  addAddress: async ({ address }: { address: any }) => {
     return request('/users/me/addresses', {
       method: 'POST',
-      body: JSON.stringify(address),
+      data: address,
     });
   },
 
-  updateAddress: async (id: number | string, address: any) => {
+  updateAddress: async ({ id, address }: { id: number | string; address: any }) => {
     return request(`/users/me/addresses/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(address),
+      data: address,
     });
   },
 
-  deleteAddress: async (id: number | string) => {
+  deleteAddress: async ({ id }: { id: number | string }) => {
     return request(`/users/me/addresses/${id}`, {
       method: 'DELETE',
     });
@@ -188,14 +179,14 @@ export const api = {
     return request('/users/me/payment-methods');
   },
 
-  addPaymentMethod: async (paymentMethod: any) => {
+  addPaymentMethod: async ({ paymentMethod }: { paymentMethod: any }) => {
     return request('/users/me/payment-methods', {
       method: 'POST',
-      body: JSON.stringify(paymentMethod),
+      data: paymentMethod,
     });
   },
 
-  deletePaymentMethod: async (id: number | string) => {
+  deletePaymentMethod: async ({ id }: { id: number | string }) => {
     return request(`/users/me/payment-methods/${id}`, {
       method: 'DELETE',
     });
@@ -206,14 +197,14 @@ export const api = {
     return request('/wishlist');
   },
 
-  addWishlistItem: async (productId: number | string) => {
+  addWishlistItem: async ({ productId }: { productId: number | string }) => {
     return request('/wishlist/items', {
       method: 'POST',
-      body: JSON.stringify({ productId }),
+      data: { productId },
     });
   },
 
-  deleteWishlistItem: async (productId: number | string) => {
+  deleteWishlistItem: async ({ productId }: { productId: number | string }) => {
     return request(`/wishlist/items/${productId}`, {
       method: 'DELETE',
     });
@@ -224,22 +215,28 @@ export const api = {
     return request('/cart');
   },
 
-  addCartItem: async (productId: number | string, quantity: number, color?: string, size?: string) => {
+  addCartItem: async ({ productId, quantity, color, size }: { productId: number | string; quantity: number; color?: string; size?: string }) => {
     return request('/cart/items', {
       method: 'POST',
-      body: JSON.stringify({ productId, quantity, color, size }),
+      data: { productId, quantity, color, size },
     });
   },
 
-  updateCartItem: async (id: number | string, quantity: number) => {
+  updateCartItem: async ({ id, quantity }: { id: number | string; quantity: number }) => {
     return request(`/cart/items/${id}`, {
       method: 'PUT',
-      body: JSON.stringify({ quantity }),
+      data: { quantity },
     });
   },
 
-  deleteCartItem: async (id: number | string) => {
+  deleteCartItem: async ({ id }: { id: number | string }) => {
     return request(`/cart/items/${id}`, {
+      method: 'DELETE',
+    });
+  },
+
+  clearCart: async () => {
+    return request('/cart/clear', {
       method: 'DELETE',
     });
   },
