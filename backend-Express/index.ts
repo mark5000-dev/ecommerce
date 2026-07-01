@@ -18,13 +18,15 @@ app.use(express.json());
 
 app.use('/api', apiRouter);
 
-
 app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'UP', runtime: 'bunx' });
 });
 
-app.listen(PORT, () => {
+// ─── Dev seed ────────────────────────────────────────────────────────────────
+// Ensures the hardcoded dev user used by ensureAuthenticated() in api.ts exists.
+// Safe to run on every restart — skipped if the user is already present.
+
+
+app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-

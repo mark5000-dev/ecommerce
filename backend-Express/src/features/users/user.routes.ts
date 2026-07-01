@@ -15,6 +15,7 @@ import {
 
 const router = Router();
 
+// Apply auth middleware uniformly across all subroutes
 router.use(authenticateJWT);
 
 router.get('/me', getProfile);
