@@ -18,6 +18,7 @@ import { ProductCard } from "@/features/productCard";
 import type { Product } from "@/model";
 import { useProductsQuery } from "@/hooks/useProducts";
 import { useWishlistQuery, useDeleteWishlistItemMutation } from "@/hooks/useWishlist";
+import { RequireAuth } from "@/components/auth/require-auth";
 
 export default function WishlistPage() {
   // Query Stream Sync Hook Interfaces
@@ -63,6 +64,7 @@ export default function WishlistPage() {
   }
 
   return (
+    <RequireAuth>
     <div className="min-h-screen flex flex-col bg-background">
       <div className="flex-1">
         {/* Breadcrumb Navigation Segment */}
@@ -197,5 +199,6 @@ export default function WishlistPage() {
         </section>
       </div>
     </div>
+    </RequireAuth>
   );
 }

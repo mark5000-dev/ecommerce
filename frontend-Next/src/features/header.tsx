@@ -1,21 +1,61 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { ShoppingBag, Search, User, Menu, Heart } from "lucide-react";
-
+import { ShoppingBag, Search, User, Menu, Heart,LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Cart } from "./cartslider";
+import { useAuthState } from "@/app/provider";
+import { useCartQuery } from "@/hooks/useCart";
+import { useWishlistQuery } from "@/hooks/useWishlist";
+import { api } from "@/lib/api";
+
 
 // TODO: Link these to your updated state management layout 
 // (e.g., Zustand store or React Query counts)
+
+export function LogoutButton() {
+  const { setIsAuthenticated } = useAuthState();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      // 1. Tell backend to clear session and let api.ts run setToken(null)
+      await api.logout(); 
+      
+      // 2. Synchronously flip the UI state flag to false
+      setIsAuthenticated(false); 
+      
+      // 3. Kick them back out to public territory
+      router.push("/"); 
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
+
+  return (
+    <button onClick={handleLogout} className="text-xs uppercase tracking-widest text-destructive">
+      <LogOut className="h-4 w-4"/>
+    </button>
+  );
+};
+
 const useHeaderCounters = () => {
+  // 1. Alias 'data' to avoid naming collisions, and default to an empty array if undefined
+  const { data: cartRes } = useCartQuery();
+  const { data: wishlistRes } = useWishlistQuery();
+
+  // 2. Safely normalize data types using your API's structured payload fallback patterns
+  const cartItems = cartRes ? (Array.isArray(cartRes) ? cartRes : cartRes.items || []) : [];
+  const wishlistItems = wishlistRes || [];
+
+  // 3. Compute counts using the standard array .length property
   return {
-    cartItemsCount: 3, // Mock value for compilation
-    wishlistItemsCount: 1, // Mock value for compilation
+    cartItemsCount: cartItems.length,
+    wishlistItemsCount: wishlistItems.length,
   };
 };
 
@@ -107,6 +147,8 @@ export const Header = () => {
                 </Badge>
               )}
             </Button>
+            <LogoutButton />
+            
 
             {/* Mobile Menu Sheet */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -148,6 +190,7 @@ export const Header = () => {
                     <ShoppingBag className="h-4 w-4" />
                     Cart {cartItemsCount > 0 && `(${cartItemsCount})`}
                   </Link>
+                  <LogoutButton />
                 </nav>
               </SheetContent>
             </Sheet>

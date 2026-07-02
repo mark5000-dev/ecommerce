@@ -641,7 +641,7 @@
     "id": 23,
     "name": "Leather Belt",
     "price": 449,
-    "image": "https://images.unsplash.com/photo-1624222247344-550fb60583c2?w=800",
+    "image": "https://images.unsplash.com/photo-1752386223406-b3d94092d790?w=800",
     "mainCategory": "accessories",
     "subCategories": ["belts", "leather"],
     "description": "Classic leather belt with gold-tone buckle.",
@@ -651,7 +651,7 @@
     "reviews": 178,
     "colors": ["Black", "Brown"],
     "images": [
-      "https://images.unsplash.com/photo-1624222247344-550fb60583c2?w=800",
+      "https://images.unsplash.com/photo-1752386223406-b3d94092d790?w=800",
       "https://images.unsplash.com/photo-1612233445567-leatherbelt1?w=800",
       "https://images.unsplash.com/photo-1623344556678-leatherbelt2?w=800",
       "https://images.unsplash.com/photo-1609876543210-leatherbelt3?w=800"

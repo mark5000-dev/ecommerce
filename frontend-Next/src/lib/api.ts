@@ -1,11 +1,16 @@
+import { type Order } from "@/model";
 import axios, { AxiosRequestConfig } from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
-let token: string | null = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+export const getToken = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('token');
+  }
+  return null;
+};
 
 export const setToken = (newToken: string | null) => {
-  token = newToken;
   if (typeof window !== 'undefined') {
     if (newToken) {
       localStorage.setItem('token', newToken);
@@ -15,41 +20,20 @@ export const setToken = (newToken: string | null) => {
   }
 };
 
-export const getToken = () => token;
-
-// Helper to auto-login if needed during development
 async function ensureAuthenticated() {
-  if (token) return token;
-
-  try {
-    const res = await axios.post(`${BASE_URL}/auth/login`, {
-      email: 'alex@example.com',
-      password: 'password123'
-    });
-
-    if (res.data?.token) {
-      setToken(res.data.token);
-      return res.data.token;
-    }
-  } catch (error) {
-    console.error('Auto login failed:', error);
-  }
-  return null;
+  return getToken();
 }
 
 async function request(path: string, options: AxiosRequestConfig = {}) {
-  const isAuthRequired = path.startsWith('/users/') || path.startsWith('/wishlist') || path.startsWith('/cart');
-
   const headers = {
     'Content-Type': 'application/json',
     ...(options.headers || {}),
   } as Record<string, string>;
 
-  if (isAuthRequired) {
-    const currentToken = await ensureAuthenticated();
-    if (currentToken) {
-      headers['Authorization'] = `Bearer ${currentToken}`;
-    }
+  // Dynamically grab the token right before firing the request
+  const activeToken = getToken();
+  if (activeToken) {
+    headers['Authorization'] = `Bearer ${activeToken}`;
   }
 
   try {
@@ -68,12 +52,9 @@ async function request(path: string, options: AxiosRequestConfig = {}) {
 export const api = {
   // Auth
   login: async ({ email, password }: { email: string; password: string }) => {
-    const data = await request('/auth/login', {
-      method: 'POST',
-      data: { email, password },
-    });
+    const data = await request('/auth/login', { method: 'POST', data: { email, password } });
     if (data.token) {
-      setToken(data.token);
+      setToken(data.token); // ◄ Automatically writes token to localStorage
     }
     return data;
   },
@@ -90,7 +71,7 @@ export const api = {
   },
 
   logout: async () => {
-    setToken(null);
+    setToken(null); // ◄ Instantly deletes the token from localStorage
     return request('/auth/logout', { method: 'POST' });
   },
 
@@ -242,7 +223,10 @@ export const api = {
   },
 
   // Orders
-  getOrders: async () => {
-    return request('/orders');
-  },
+  getOrders: async (): Promise<{ orders: Order[] }> => {
+    return request('/orders', {
+      method: 'GET'
+  });
+}
+
 };

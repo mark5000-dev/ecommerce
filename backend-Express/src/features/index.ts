@@ -6,7 +6,7 @@ import newsLetterRouter from './newsletter/newsletter.routes';
 import orderRouter from './orders/order.routes';
 import userRouter from './users/user.routes';
 import cartRouter from './cart/cart.routes';
-import wishlistRouter from './wishlist/wishlist.routes';
+import wishListRouter from './wishlist/wishlist.routes';
 
 const apiRouter = Router();
 
@@ -15,9 +15,9 @@ apiRouter.use('/products', productRouter);
 apiRouter.use('/categories', categoryRouter);
 apiRouter.use('/users', userRouter);
 apiRouter.use('/cart', cartRouter);
-apiRouter.use('/orders', orderRouter);
-apiRouter.use('/wishlist', wishlistRouter);
+apiRouter.use('/order', orderRouter);
 apiRouter.use('/newsletter', newsLetterRouter);
+apiRouter.use('/wishlist', wishListRouter);
 
 
 export default apiRouter;

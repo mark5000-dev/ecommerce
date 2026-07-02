@@ -4,7 +4,7 @@ import { drizzleDb } from '../core/db/client';
 import * as schema from '../core/db/schema';
 
 // Deconstruct the named exports from your schema object
-const { users, products, categories, orders, cartItems, wishlistItems, newsletterSubscribers } = schema;
+const { users, products, categories, orders, orderItems, cartItems, wishlistItems, newsletterSubscribers } = schema;
 
 const dataDir = path.resolve('src', 'data');
 
@@ -26,7 +26,9 @@ const seed = async () => {
   const sampleProducts = readJson<any[]>('sample_data.json');
   const sampleCategories = readJson<any[]>('mock_categories.json');
 
-  // Truncate tables cleanly using Drizzle ORM references
+  // CRITICAL FIX: Delete child references (orderItems) BEFORE clearing parent records (orders)
+  // to avoid Foreign Key constraint crashes.
+  await cleanTable(orderItems);
   await cleanTable(wishlistItems);
   await cleanTable(cartItems);
   await cleanTable(orders);
@@ -61,8 +63,6 @@ const seed = async () => {
       description: category.description,
       productCount: category.productCount,
       featured: category.featured,
-      // If your Drizzle schema expects text/string for SQLite JSON fields, leave this stringify.
-      // If your Drizzle schema uses .json() datatype, pass the raw array/object directly.
       subcategories: JSON.stringify(category.subcategories),
     })),
   );
@@ -76,7 +76,6 @@ const seed = async () => {
       mainCategory: product.mainCategory,
       subCategories: JSON.stringify(product.subCategories),
       description: product.description,
-      // Pass actual booleans instead of 1 or 0
       isNew: !!product.isNew,
       isBestseller: !!product.isBestseller,
       rating: Math.round(product.rating),
@@ -89,17 +88,20 @@ const seed = async () => {
     })),
   );
 
+  // Note: Make sure productIds (31, 5) match IDs existing inside your sample_data.json
   await drizzleDb.insert(cartItems).values([
-    { userId: 1, productId: 1, quantity: 1, color: 'Red', size: 'M' },
-    { userId: 1, productId: 2, quantity: 2, color: 'Blue', size: 'L' }
+    { userId: 1, productId: 31, quantity: 1, color: 'Red', size: 'M' },
+    { userId: 1, productId: 5, quantity: 2, color: 'Blue', size: 'L' }
   ]);
 
+  // Note: Make sure productIds (7, 28) match IDs existing inside your sample_data.json
   await drizzleDb.insert(wishlistItems).values([
-    { userId: 1, productId: 1, addedAt: new Date().toISOString() },
-    { userId: 1, productId: 2, addedAt: new Date().toISOString() }
+    { userId: 1, productId: 7, addedAt: new Date().toISOString() },
+    { userId: 1, productId: 28, addedAt: new Date().toISOString() }
   ]);
 
-  await drizzleDb.insert(orders).values([
+  // Insert high-level orders and capture generated sequential sequence IDs 
+  const insertedOrders = await drizzleDb.insert(orders).values([
     {
       userId: 1,
       orderId: "ORD001",
@@ -117,6 +119,41 @@ const seed = async () => {
       shippingAddress: '123 Main St',
       trackingNumber: '123456',
       createdAt: new Date().toISOString()
+    }
+  ]).returning({ id: orders.id, orderId: orders.orderId });
+
+  const dbOrder001 = insertedOrders.find(o => o.orderId === "ORD001");
+  const dbOrder002 = insertedOrders.find(o => o.orderId === "ORD002");
+
+  if (!dbOrder001 || !dbOrder002) {
+    throw new Error("Could not retrieve inserted order references for items seeding.");
+  }
+
+  // Insert child items mapping directly into the newly generated parent IDs
+  await drizzleDb.insert(orderItems).values([
+    {
+      orderId: dbOrder001.id, 
+      productId: 1,
+      quantity: 1,
+      priceAtPurchase: 40,
+      color: 'Red',
+      size: 'M'
+    },
+    {
+      orderId: dbOrder001.id,
+      productId: 2,
+      quantity: 2,
+      priceAtPurchase: 30, 
+      color: 'Blue',
+      size: 'L'
+    },
+    {
+      orderId: dbOrder002.id, 
+      productId: 1,
+      quantity: 4,
+      priceAtPurchase: 50, 
+      color: 'Black',
+      size: 'XL'
     }
   ]);
 

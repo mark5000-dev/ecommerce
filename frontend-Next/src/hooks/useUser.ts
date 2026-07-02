@@ -1,11 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import { api, getToken } from "@/lib/api";
 
 //Get user profile
 export const useUserProfileQuery = () => {
     return useQuery({
         queryKey: ['user'],
-        queryFn: () => api.getProfile()
+        queryFn: () => api.getProfile(),
+        enabled: Boolean(getToken()),
     });
 };
 
@@ -24,6 +25,7 @@ export const useAddressesQuery = () => {
     return useQuery({
         queryKey: ['addresses'],
         queryFn: () => api.getAddresses(),
+        enabled: Boolean(getToken()),
     });
 };
 
@@ -61,6 +63,7 @@ export const usePaymentMethodsQuery = () => {
     return useQuery({
         queryKey: ['payment-methods'],
         queryFn: () => api.getPaymentMethods().then(res => res || []),
+        enabled: Boolean(getToken()),
     });
 };
 
@@ -69,5 +72,6 @@ export const useOrdersQuery = () => {
     return useQuery({
         queryKey: ['orders'],
         queryFn: () => api.getOrders().then(res => res?.orders || []),
+        enabled: Boolean(getToken()),
     });
 };

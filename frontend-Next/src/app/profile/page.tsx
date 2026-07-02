@@ -43,6 +43,8 @@ import {
   useOrdersQuery
 } from '@/hooks/useUser';
 import { useWishlistQuery } from '@/hooks/useWishlist';
+import { RequireAuth } from '@/components/auth/require-auth';
+import { type Order } from "@/model";
 
 /* ==========================================
    PRIMARY CONTROLLER WORKSPACE COMPONENT
@@ -73,23 +75,16 @@ export default function ProfilePage() {
   const addresses = addressesRes || [];
   const paymentMethodsList = paymentsRes || [];
 
-  // Formatted Order Ledger Structure
-  const ordersList = useMemo(() => {
+  const ordersList = useMemo<Order[]>(() => {
     if (!ordersRes) return [];
-    return ordersRes.map((ord: any) => ({
-      id: ord.orderId,
-      date: new Date(ord.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-      status: ord.status || "Processing",
-      total: ord.total || 0,
-      items: ord.itemsCount || 1,
-      image: ord.items?.[0]?.productImage || "https://images.unsplash.com/photo-1567777301743-3b7ef158aadf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    }));
+    return ordersRes; 
   }, [ordersRes]);
 
-  // Filtered Orders Selection
-  const filteredOrders = useMemo(() => {
+  const filteredOrders = useMemo<Order[]>(() => {
     if (orderFilter === "all") return ordersList;
-    return ordersList.filter((o: any) => o.status.toLowerCase() === orderFilter.toLowerCase());
+    return ordersList.filter((order: Order) => 
+      order.status.toLowerCase() === orderFilter.toLowerCase()
+    );
   }, [ordersList, orderFilter]);
 
   // Resolved Wishlist Details Mapping
@@ -157,6 +152,7 @@ export default function ProfilePage() {
   }
 
   return (
+    <RequireAuth>
     <div className="min-h-screen flex flex-col bg-background">
       <div className="flex-1 bg-card">
         {/* Profile Header Block */}
@@ -292,6 +288,7 @@ export default function ProfilePage() {
               </TabsContent>
 
               {/* Orders Panel View */}
+              {/* Orders Panel View */}
               <TabsContent value="orders" className="space-y-6 outline-none">
                 <div className="flex justify-between items-center">
                   <div>
@@ -316,36 +313,51 @@ export default function ProfilePage() {
                 ) : filteredOrders.length === 0 ? (
                   <div className="py-12 text-center text-sm font-serif text-muted-foreground">No archival records correspond with selection.</div>
                 ) : (
-                  filteredOrders.map((order: any) => (
-                    <Card key={order.id} className="border-border rounded-none shadow-none">
-                      <CardHeader>
-                        <div className="flex flex-col sm:flex-row justify-between gap-4">
-                          <div>
-                            <CardTitle className="font-serif text-base mb-1 text-foreground">{order.id}</CardTitle>
-                            <CardDescription className="text-xs font-light">Transaction timeline: {order.date}</CardDescription>
+                  filteredOrders.map((order:Order) => {
+                    // Calculate total item quantities cleanly from your child objects
+                    const totalItemCount = order.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+                    
+                    // Format your ISO database string into a readable UI localized layout
+                    const formattedDate = new Date(order.createdAt).toLocaleDateString(undefined, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    });
+
+                    return (
+                      <Card key={order.id} className="border-border rounded-none shadow-none">
+                        <CardHeader>
+                          <div className="flex flex-col sm:flex-row justify-between gap-4">
+                            <div>
+                              {/* Render the public Order string identifier (e.g., ORD-12345) */}
+                              <CardTitle className="font-serif text-base mb-1 text-foreground">{order.orderId}</CardTitle>
+                              <CardDescription className="text-xs font-light">Transaction timeline: {formattedDate}</CardDescription>
+                            </div>
+                            <Badge variant="outline" className={`self-start sm:self-auto text-[10px] uppercase font-medium rounded-none py-0.5 ${getStatusColor(order.status)}`}>
+                              {getStatusIcon(order.status)}
+                              <span className="ml-1">{order.status}</span>
+                            </Badge>
                           </div>
-                          <Badge variant="outline" className={`self-start sm:self-auto text-[10px] uppercase font-medium rounded-none py-0.5 ${getStatusColor(order.status)}`}>
-                            {getStatusIcon(order.status)}
-                            <span className="ml-1">{order.status}</span>
-                          </Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className="w-20 h-20 bg-muted overflow-hidden flex-shrink-0">
-                            <ImageWithFallback src={order.image} alt="Fulfillment thumb" className="w-full h-full object-cover" />
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex items-center gap-4 mb-4">
+                            <div className="w-20 h-20 bg-muted overflow-hidden flex-shrink-0 flex items-center justify-center border border-dashed">
+                              {/* Fallback box UI representation (or hook to first item image if passed) */}
+                              <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">📦 Manifest</span>
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-xs text-muted-foreground mb-1 font-light">
+                                {totalItemCount} {totalItemCount === 1 ? "item" : "items"} packed
+                              </p>
+                              <p className="text-[#D4AF37] font-serif text-xl">${order.total.toLocaleString()}</p>
+                            </div>
                           </div>
-                          <div className="flex-1">
-                            <p className="text-xs text-muted-foreground mb-1 font-light">{order.items} {order.items === 1 ? "item" : "items"}</p>
-                            <p className="text-[#D4AF37] font-serif text-xl">${order.total.toLocaleString()}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
+                        </CardContent>
+                      </Card>
+                    );
+                  })
                 )}
               </TabsContent>
-
               {/* Wishlist Presentation layout */}
               <TabsContent value="wishlist" className="space-y-6 outline-none">
                 <div>
@@ -525,5 +537,6 @@ export default function ProfilePage() {
         </section>
       </div>
     </div>
+    </RequireAuth>
   );
 }
