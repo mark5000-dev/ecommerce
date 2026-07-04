@@ -41,5 +41,5 @@ export const authenticateJWT = (req: AuthenticatedRequest, res: Response, next: 
 };
 
 export const createToken = (user: { id: number; email: string; firstName: string; lastName: string }) => {
-  return jwt.sign(user, JWT_SECRET, { expiresIn: '8h' });
+  return jwt.sign(user, JWT_SECRET, { expiresIn: '30m' });
 };

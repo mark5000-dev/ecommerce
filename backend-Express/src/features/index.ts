@@ -15,7 +15,7 @@ apiRouter.use('/products', productRouter);
 apiRouter.use('/categories', categoryRouter);
 apiRouter.use('/users', userRouter);
 apiRouter.use('/cart', cartRouter);
-apiRouter.use('/order', orderRouter);
+apiRouter.use('/orders', orderRouter);
 apiRouter.use('/newsletter', newsLetterRouter);
 apiRouter.use('/wishlist', wishListRouter);
 

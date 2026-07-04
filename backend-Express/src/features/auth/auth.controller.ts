@@ -125,6 +125,8 @@ export const getProfile = async (req: Request, res: Response) => {
   }
 };
 
+
+//implement logout functionality
 export const logout = (_req: Request, res: Response) => {
   return res.json({ message: 'Logged out successfully' });
 };
