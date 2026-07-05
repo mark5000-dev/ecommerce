@@ -112,11 +112,14 @@ export default function ProfilePage() {
   const handleCreateAddress = (e: React.FormEvent) => {
     e.preventDefault();
     addAddressMutation.mutate({
-      name: `${newAddress.firstName} ${newAddress.lastName}`,
-      address: newAddress.address,
-      city: `${newAddress.city}, NY ${newAddress.zip}`,
-      phone: newAddress.phone,
       type: newAddress.type,
+      address: newAddress.address,
+      city: newAddress.city,
+      state: "NY", // Or pull from an input state
+      zip: newAddress.zip,
+      country: "USA",
+      phone: newAddress.phone,
+      isDefault: false
     }, {
       onSuccess: () => {
         setIsAddAddressOpen(false);
@@ -261,26 +264,33 @@ export default function ProfilePage() {
                       <div className="py-6 text-center text-xs text-muted-foreground">No transaction actions established.</div>
                     ) : (
                       <div className="space-y-4">
-                        {ordersList.slice(0, 3).map((order: any) => (
-                          <div key={order.id} className="flex items-center gap-4 p-4 border border-border rounded-none">
-                            <div className="w-16 h-16 bg-muted overflow-hidden flex-shrink-0">
-                              <ImageWithFallback src={order.image} alt="Ledger thumb reference" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 mb-1">
-                                <p className="font-medium text-xs text-foreground truncate">{order.id}</p>
-                                <Badge variant="outline" className={`text-[10px] uppercase font-medium rounded-none py-0.5 ${getStatusColor(order.status)}`}>
-                                  {getStatusIcon(order.status)}
-                                  <span className="ml-1">{order.status}</span>
-                                </Badge>
+                        {ordersList.slice(0, 3).map((order: Order) => {
+                          const totalItemCount = order.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+                          const formattedDate = new Date(order.createdAt).toLocaleDateString(undefined, {
+                            month: "short", day: "numeric", year: "numeric"
+                          });
+
+                          return (
+                            <div key={order.id} className="flex items-center gap-4 p-4 border border-border rounded-none">
+                              <div className="w-16 h-16 bg-muted overflow-hidden flex-shrink-0 flex items-center justify-center border border-dashed">
+                                <span className="text-[9px] text-muted-foreground uppercase tracking-widest font-mono">📦 Item</span>
                               </div>
-                              <p className="text-xs text-muted-foreground font-light">{order.date} • {order.items} items</p>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <p className="font-medium text-xs text-foreground truncate">{order.orderId}</p>
+                                  <Badge variant="outline" className={`text-[10px] uppercase font-medium rounded-none py-0.5 ${getStatusColor(order.status)}`}>
+                                    {getStatusIcon(order.status)}
+                                    <span className="ml-1">{order.status}</span>
+                                  </Badge>
+                                </div>
+                                <p className="text-xs text-muted-foreground font-light">{formattedDate} • {totalItemCount} items</p>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-[#D4AF37] text-sm font-medium mb-1">${order.total.toLocaleString()}</p>
+                              </div>
                             </div>
-                            <div className="text-right">
-                              <p className="text-[#D4AF37] text-sm font-medium mb-1">${order.total.toLocaleString()}</p>
-                            </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     )}
                   </CardContent>
@@ -358,6 +368,8 @@ export default function ProfilePage() {
                   })
                 )}
               </TabsContent>
+
+
               {/* Wishlist Presentation layout */}
               <TabsContent value="wishlist" className="space-y-6 outline-none">
                 <div>
@@ -465,9 +477,9 @@ export default function ProfilePage() {
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <p className="text-sm font-medium mb-1 text-foreground">{address.name}</p>
+                          <p className="text-sm font-medium mb-1 text-foreground">{user.firstName} {user.lastName}</p>
                           <p className="text-xs text-muted-foreground font-light mb-0.5">{address.address}</p>
-                          <p className="text-xs text-muted-foreground font-light mb-4">{address.city}</p>
+                          <p className="text-xs text-muted-foreground font-light mb-4">{address.city}, {address.state} {address.zip}</p>
                           <Separator className="my-4" />
                           <div className="flex gap-2">
                             <Button variant="outline" size="sm" onClick={() => deleteAddressMutation.mutate(address.id)} className="flex-1 rounded-none border-border text-xs uppercase text-red-600 hover:text-red-700">

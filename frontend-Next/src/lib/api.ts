@@ -54,7 +54,7 @@ export const api = {
   login: async ({ email, password }: { email: string; password: string }) => {
     const data = await request('/auth/login', { method: 'POST', data: { email, password } });
     if (data.token) {
-      setToken(data.token); // ◄ Automatically writes token to localStorage
+      setToken(data.token);
     }
     return data;
   },
@@ -71,8 +71,9 @@ export const api = {
   },
 
   logout: async () => {
-    setToken(null); // ◄ Instantly deletes the token from localStorage
-    return request('/auth/logout', { method: 'POST' });
+    const data = await request('/auth/logout', { method: 'POST' });
+    setToken(null);
+    return data;
   },
 
   // Products
@@ -132,18 +133,19 @@ export const api = {
     });
   },
 
+  // Addresses (Updated: No longer accepts manual userId parameters)
   getAddresses: async () => {
     return request('/users/me/addresses');
   },
 
-  addAddress: async ({ address }: { address: any }) => {
+  addAddress: async ({ address }: { address: { type: string; address: string; city: string; state: string; zip: string; country: string; phone?: string; isDefault?: boolean } }) => {
     return request('/users/me/addresses', {
       method: 'POST',
       data: address,
     });
   },
 
-  updateAddress: async ({ id, address }: { id: number | string; address: any }) => {
+  updateAddress: async ({ id, address }: { id: number | string; address: Partial<{ type: string; address: string; city: string; state: string; zip: string; country: string; phone?: string; isDefault?: boolean }> }) => {
     return request(`/users/me/addresses/${id}`, {
       method: 'PUT',
       data: address,
@@ -156,13 +158,21 @@ export const api = {
     });
   },
 
+  // Payment Methods (Updated to align with user.routes backend pattern)
   getPaymentMethods: async () => {
     return request('/users/me/payment-methods');
   },
 
-  addPaymentMethod: async ({ paymentMethod }: { paymentMethod: any }) => {
+  addPaymentMethod: async ({ paymentMethod }: { paymentMethod: { type: string; last4: string; expiry: string; isDefault?: boolean } }) => {
     return request('/users/me/payment-methods', {
       method: 'POST',
+      data: paymentMethod,
+    });
+  },
+
+  updatePaymentMethod: async ({ id, paymentMethod }: { id: number | string; paymentMethod: Partial<{ type: string; last4: string; expiry: string; isDefault?: boolean }> }) => {
+    return request(`/users/me/payment-methods/${id}`, {
+      method: 'PUT',
       data: paymentMethod,
     });
   },
@@ -173,7 +183,7 @@ export const api = {
     });
   },
 
-  // Wishlist
+  // Wishlist (Updated: Removed manual user ids)
   getWishlist: async () => {
     return request('/wishlist');
   },
@@ -191,7 +201,7 @@ export const api = {
     });
   },
 
-  // Cart
+  // Cart (Updated: Pure body mapping matching token auth)
   getCart: async () => {
     return request('/cart');
   },
@@ -203,10 +213,10 @@ export const api = {
     });
   },
 
-  updateCartItem: async ({ id, quantity }: { id: number | string; quantity: number }) => {
+  updateCartItem: async ({ id, quantity, color, size }: { id: number | string; quantity?: number; color?: string; size?: string }) => {
     return request(`/cart/items/${id}`, {
       method: 'PUT',
-      data: { quantity },
+      data: { quantity, color, size },
     });
   },
 
@@ -226,7 +236,13 @@ export const api = {
   getOrders: async (): Promise<{ orders: Order[] }> => {
     return request('/orders', {
       method: 'GET'
-  });
-}
-
+    });
+  },
+  
+  createOrder: async (orderData: { total: number; shippingAddress: string; trackingNumber?: string; items: Array<{ productId: number; quantity: number; priceAtPurchase: number; color?: string; size?: string }> }) => {
+    return request('/orders', {
+      method: 'POST',
+      data: orderData,
+    });
+  }
 };

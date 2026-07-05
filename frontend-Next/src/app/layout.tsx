@@ -1,10 +1,9 @@
 import { Poppins, Playfair_Display, Noto_Sans } from "next/font/google"
-import "./globals.css" // Your global stylesheet
+import "./globals.css";
 
 import { Header } from "../features/header";
 import { Footer } from "../features/footer";
 import { cn } from "@/lib/utils";
-import { title } from "process";
 import { type Metadata } from "next";
 import { Providers } from "./provider";
 
@@ -16,7 +15,7 @@ const notoSans = Noto_Sans({ subsets: ['latin'], variable: '--font-sans' });
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins", // Maps to a CSS variable
+  variable: "--font-poppins", 
 })
 
 const playfair = Playfair_Display({
