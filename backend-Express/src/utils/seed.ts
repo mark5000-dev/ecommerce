@@ -4,7 +4,7 @@ import { drizzleDb } from '../core/db/client';
 import * as schema from '../core/db/schema';
 
 // Deconstruct the named exports from your schema object
-const { users, products, categories, orders, orderItems, cartItems, wishlistItems, newsletterSubscribers } = schema;
+const { users, products, categories, orders, orderItems, cartItems, wishlistItems, newsletterSubscribers, addresses, paymentMethods } = schema;
 
 const dataDir = path.resolve('src', 'data');
 
@@ -36,9 +36,12 @@ const seed = async () => {
   await cleanTable(categories);
   await cleanTable(users);
   await cleanTable(newsletterSubscribers);
+  await cleanTable(addresses);
+  await cleanTable(paymentMethods);
 
   console.log('🌱 Seeding new data...');
 
+  console.log('Seeding users...');
   await drizzleDb.insert(users).values([
     {
       firstName: 'Alexandra',
@@ -54,6 +57,52 @@ const seed = async () => {
     },
   ]);
 
+  console.log('Adding addresses...');
+  await drizzleDb.insert(addresses).values([
+    {
+      userId: 1,
+      type: 'Home',
+      address: '123 Main St',
+      city: 'Springfield',
+      state: 'IL',
+      zip: '62701',
+      country: 'USA',
+      phone: '+1 (555) 123-4567',
+      isDefault: 1,
+    },
+    {
+        userId: 1,
+        type: 'office',
+        address: '456 Park Avenue, Suite 2000',
+        city: 'New York',
+        state: 'NY',
+        zip: '10022',
+        country: 'USA',
+        phone: '+1 (555) 987-6543',
+        isDefault: 0,
+    },
+  ]);
+
+  console.log('Adding payment methods...');
+  await drizzleDb.insert(paymentMethods).values([
+    {
+      userId: 1,
+      type: 'Credit Card',
+      last4: '1234',
+      expiry: '12/25',
+      isDefault: 1,
+    },
+    {
+      userId: 1,
+      type: 'PayPal',
+      last4: '5678',
+      expiry: 'N/A',
+      isDefault: 0,
+    },
+  ]);
+
+
+  console.log('Seeding categories...');
   await drizzleDb.insert(categories).values(
     sampleCategories.map((category) => ({
       categoryId: category.id,
@@ -66,7 +115,7 @@ const seed = async () => {
       subcategories: JSON.stringify(category.subcategories),
     })),
   );
-
+  console.log('seeding products...');
   await drizzleDb.insert(products).values(
     sampleProducts.map((product) => ({
       id: product.id,
@@ -88,19 +137,19 @@ const seed = async () => {
     })),
   );
 
-  // Note: Make sure productIds (31, 5) match IDs existing inside your sample_data.json
+  console.log('inserting cartitems...');
   await drizzleDb.insert(cartItems).values([
     { userId: 1, productId: 31, quantity: 1, color: 'Red', size: 'M' },
     { userId: 1, productId: 5, quantity: 2, color: 'Blue', size: 'L' }
   ]);
 
-  // Note: Make sure productIds (7, 28) match IDs existing inside your sample_data.json
+  console.log('inserting wishlist items...');
   await drizzleDb.insert(wishlistItems).values([
     { userId: 1, productId: 7, addedAt: new Date().toISOString() },
     { userId: 1, productId: 28, addedAt: new Date().toISOString() }
   ]);
 
-  // Insert high-level orders and capture generated sequential sequence IDs 
+  console.log('adding orders and order items...'); 
   const insertedOrders = await drizzleDb.insert(orders).values([
     {
       userId: 1,
@@ -157,6 +206,7 @@ const seed = async () => {
     }
   ]);
 
+  console.log('adding newsletter subscribers...');
   await drizzleDb.insert(newsletterSubscribers).values([
     { email: 'alex@example.com', subscribedAt: new Date().toISOString() },
     { email: "booking@domain.com", subscribedAt: new Date().toISOString() }

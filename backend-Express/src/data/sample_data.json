@@ -1013,6 +1013,63 @@
     "inStock": true,
     "stock": 36,
     "isFeatured": false
+  },
+  {
+    "id": 36,
+    "name": "Luxury Perfume",
+    "price": 199,
+    "image": "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=800",
+    "mainCategory": "accessories",
+    "subCategories": ["fragrance", "perfume"],
+    "description": "Exquisite fragrance with notes of jasmine, vanilla, and sandalwood.",
+    "isNew": true,
+    "isBestseller": true,
+    "rating": 4.9,
+    "reviews": 134,
+    "colors": ["Clear"],
+    "images": [
+      "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=800",
+      "https://images.unsplash.com/photo-1612233445567-luxuryperfume1?w=800",
+      "https://images.unsplash.com/photo-1623344556678-luxuryperfume2?w=800",
+      "https://images.unsplash.com/photo-1609876543210-luxuryperfume3?w=800"
+    ],
+    "comments": [
+      { "id": 1, "author": "Olivia M.", "rating": 5, "date": "1 day ago", "comment": "Divine scent, lasts all day." },
+      { "id": 2, "author": "Emma L.", "rating": 5, "date": "3 days ago", "comment": "Elegant and sophisticated fragrance." },
+      { "id": 3, "author": "Sophia T.", "rating": 5, "date": "1 week ago", "comment": "Perfect gift, very luxurious." },
+      { "id": 4, "author": "Ava H.", "rating": 4, "date": "2 weeks ago", "comment": "Lovely scent but a bit strong for me." }
+    ],
+    "inStock": true,
+    "stock": 50,
+    "isFeatured": true
+  },
+  {
+    "id":37,
+    "name":"Cashmere Wrap Around",
+    "price": 899,
+    "image": "https://images.unsplash.com/photo-1567777301743-3b7ef158aadf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "mainCategory":"womens",
+    "subCategories":["dresses","skirts"],
+    "description":"Experience unparalleled luxury with this exquisite cashmere wrap around. Meticulously crafted from the finest 100% pure cashmere, this timeless piece combines supreme comfort with sophisticated elegance.",
+    "isNew":true,
+    "isBestseller":true,
+    "rating":4.9,
+    "reviews": 120,
+    "colors":["Ivory","Charcoal","Blush"],
+    "images":[
+      "https://images.unsplash.com/photo-1567777301743-3b7ef158aadf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "https://images.unsplash.com/photo-1670177257750-9b47927f68eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "https://images.unsplash.com/photo-1722842529941-825976fc14f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+    ],
+    "comments":[
+      {"id":1,"author":"Sophia L.","rating":5,"date":"1 day ago","comment":"Absolutely love this wrap! So soft and warm."},
+      {"id":2,"author":"Isabella P.","rating":5,"date":"3 days ago","comment":"Perfect for chilly evenings, very elegant."},
+      {"id":3,"author":"Amelia H.","rating":4,"date":"1 week ago","comment":"Beautiful wrap, but a bit pricey."},
+      {"id":4,"author":"Mia T.","rating":5,"date":"2 weeks ago","comment":"High-quality cashmere, worth every penny."}
+    ],
+    "inStock":true,
+    "stock": 30,
+    "isFeatured":true
   }
 ]
 
